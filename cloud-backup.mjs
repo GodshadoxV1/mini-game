@@ -1,4 +1,5 @@
 const backupButton = document.getElementById('cloud-backup');
+const syncState = document.getElementById('cloud-sync-state');
 const collection = 'piGamesBackups';
 const maxPayloadBytes = 180_000;
 const numericFields = [
@@ -10,6 +11,9 @@ const numericFields = [
   'bannerIndex'
 ];
 const connections = new Map();
+let timer;
+let working = false;
+const conflictMessage = 'Une sauvegarde plus récente est disponible. Ouvrez Sauvegarde cloud pour la restaurer ou la remplacer.';
 
 async function connect(profileId) {
   const response = await fetch('./firebase-config.json', { cache: 'no-cache' });
@@ -30,6 +34,7 @@ async function connect(profileId) {
 
 function progressFields(data) {
   const progress = {};
+  if (typeof data.name === 'string' && NAME_RE.test(data.name)) progress.name = data.name;
   for (const field of numericFields) {
     if (Number.isFinite(data[field]) && data[field] >= 0) progress[field] = data[field];
   }
@@ -45,6 +50,12 @@ function progressFields(data) {
   }
   if (['green', 'wood', 'blue', 'purple'].includes(data.chessBoardTheme)) {
     progress.chessBoardTheme = data.chessBoardTheme;
+  }
+  if (CHESS_BOTS.some(bot => bot.id === data.chessSelectedBotId)) {
+    progress.chessSelectedBotId = data.chessSelectedBotId;
+  }
+  if (Number.isInteger(data.chessCustomElo) && data.chessCustomElo >= 1320 && data.chessCustomElo <= 3500) {
+    progress.chessCustomElo = data.chessCustomElo;
   }
   progress.piDay = data.piDay === true;
   progress.weekChampion = data.weekChampion === true;
@@ -67,6 +78,110 @@ function progressFields(data) {
   return progress;
 }
 
+function competitionScores(entries) {
+  if (!Array.isArray(entries)) return undefined;
+  return entries.filter(entry => entry && typeof entry.id === 'string'
+    && /^[a-z0-9]{1,40}$/.test(entry.id) && Number.isSafeInteger(entry.score) && entry.score > 0
+    && Number.isSafeInteger(entry.ts) && entry.ts > 0 && entry.ts <= 8.64e15)
+    .map(({ id, score, ts }) => ({ id, score, ts }));
+}
+
+async function localPayload(profileId) {
+  const [profile, scores] = await Promise.all([
+    db.doc('users/' + profileId).get(),
+    db.collection('leaderboard').where('userId', '==', profileId).get()
+  ]);
+  if (!profile.exists || pUserId !== profileId) throw new Error('local-profile');
+  const progress = progressFields(profile.data());
+  const payload = JSON.stringify({
+    ...progress, competitionScores: competitionScores(scores.docs.map(score => ({ id: score.id, ...score.data() })))
+  });
+  if (new TextEncoder().encode(payload).length > maxPayloadBytes) {
+    throw Object.assign(new Error(), { code: 'backup-size' });
+  }
+  return payload;
+}
+
+function showSyncStatus(message) {
+  syncState.hidden = false;
+  syncState.textContent = message;
+}
+
+function revision(snapshot) {
+  const value = snapshot.data()?.updatedAt;
+  return value ? value.seconds + ':' + value.nanoseconds : null;
+}
+
+function revisionKey(profileId, cloudUid) {
+  return 'pi_cloud_revision_' + profileId + '_' + cloudUid;
+}
+
+async function writeBackup(store, storeSdk, remote, expected, payload) {
+  await storeSdk.runTransaction(store, async transaction => {
+    const latest = await transaction.get(remote);
+    if (revision(latest) !== expected) throw Object.assign(new Error(), { code: 'backup-changed' });
+    transaction.set(remote, { version: 1, payload, updatedAt: storeSdk.serverTimestamp() });
+  });
+  const saved = await storeSdk.getDocFromServer(remote);
+  if (saved.data()?.payload !== payload) throw Object.assign(new Error(), { code: 'backup-changed' });
+  return revision(saved);
+}
+
+function connectionFor(profileId) {
+  if (!connections.has(profileId)) {
+    connections.set(profileId, connect(profileId).catch(error => {
+      connections.delete(profileId);
+      throw error;
+    }));
+  }
+  return connections.get(profileId);
+}
+
+function scheduleBackup(delay = 900) {
+  clearTimeout(timer);
+  timer = setTimeout(automaticBackup, delay);
+}
+
+async function automaticBackup() {
+  const profileId = pUserId;
+  if (!profileId) return;
+  if (working) { scheduleBackup(); return; }
+  working = true;
+  try {
+    const { auth, store, storeSdk } = await connectionFor(profileId);
+    const user = auth.currentUser;
+    if (profileId !== pUserId) return;
+    if (!user) {
+      showSyncStatus('Connectez le compte Firebase pour activer la sauvegarde automatique.');
+      return;
+    }
+    const key = revisionKey(profileId, user.uid);
+    const remote = storeSdk.doc(store, collection, user.uid);
+    const payload = await localPayload(profileId);
+    const saved = await storeSdk.getDocFromServer(remote);
+    const current = revision(saved);
+    const previous = localStorage.getItem(key);
+    if (saved.data()?.payload === payload) {
+      localStorage.setItem(key, current);
+    } else if (current && current !== previous) {
+      showSyncStatus(conflictMessage);
+      return;
+    } else {
+      localStorage.setItem(key, await writeBackup(store, storeSdk, remote, current, payload));
+    }
+    if (profileId === pUserId) showSyncStatus('Progression sauvegardée automatiquement dans Firebase.');
+  } catch (error) {
+    if (profileId === pUserId) {
+      showSyncStatus(error.code === 'backup-changed' ? conflictMessage : errorMessage(error));
+    }
+    if (['unavailable', 'deadline-exceeded', 'auth/network-request-failed'].includes(error.code)) {
+      scheduleBackup(15_000);
+    }
+  } finally {
+    working = false;
+  }
+}
+
 function errorMessage(error) {
   switch (error.code) {
     case 'auth/invalid-credential':
@@ -76,6 +191,8 @@ function errorMessage(error) {
     case 'auth/weak-password': return 'Choisissez un mot de passe plus long.';
     case 'auth/operation-not-allowed': return 'La connexion par e-mail doit être activée dans Firebase.';
     case 'backup-changed': return 'La sauvegarde a changé sur un autre appareil. Réessayez.';
+    case 'backup-size': return 'Cette sauvegarde dépasse la taille autorisée.';
+    case 'unavailable': return 'Hors ligne. La progression locale sera sauvegardée dès la reconnexion.';
     case 'permission-denied': return 'La sauvegarde est refusée par les règles Firebase.';
     default: return 'Connexion ou sauvegarde indisponible. Réessayez.';
   }
@@ -87,6 +204,11 @@ function showBackup({ auth, authSdk, store, storeSdk }, profileId, message = '')
   const actions = [];
   const run = action => async () => {
     const status = document.getElementById('cloud-status');
+    if (working) {
+      status.textContent = 'Une sauvegarde est en cours. Réessayez dans un instant.';
+      return;
+    }
+    working = true;
     const buttons = [...document.querySelectorAll('#modal-btns button')];
     buttons.forEach(button => { button.disabled = true; });
     try {
@@ -94,6 +216,7 @@ function showBackup({ auth, authSdk, store, storeSdk }, profileId, message = '')
     } catch (error) {
       status.textContent = errorMessage(error);
     } finally {
+      working = false;
       buttons.forEach(button => { button.disabled = false; });
     }
   };
@@ -113,6 +236,7 @@ function showBackup({ auth, authSdk, store, storeSdk }, profileId, message = '')
       const pending = method(auth, email.value.trim(), password.value);
       password.value = '';
       await pending;
+      scheduleBackup(0);
       again('');
     });
     actions.push(
@@ -130,27 +254,20 @@ function showBackup({ auth, authSdk, store, storeSdk }, profileId, message = '')
     );
   } else {
     body += `<p class="mp">Compte de sauvegarde : <b>${esc(user.email || '')}</b></p>
-      <p class="mp">Sauvegardez la progression de ce profil ou restaurez votre dernière copie Firebase.</p>`;
+      <p class="mp">Les résultats, scores et réglages de ce profil sont sauvegardés automatiquement. Sur un nouvel appareil, restaurez la dernière copie avant de jouer.</p>`;
     const remote = storeSdk.doc(store, collection, user.uid);
     const local = db.doc('users/' + profileId);
+    const key = revisionKey(profileId, user.uid);
     actions.push(
       { label: 'Sauvegarder', cls: 'bp', fn: run(async () => {
         const saved = await storeSdk.getDocFromServer(remote);
-        const profile = await local.get();
-        if (!profile.exists || pUserId !== profileId) return;
-        if (saved.exists() && !window.confirm('Remplacer la dernière sauvegarde par la progression de cet appareil ?')) return;
-        const payload = JSON.stringify(progressFields(profile.data()));
-        if (new TextEncoder().encode(payload).length > maxPayloadBytes) {
-          again('Cette sauvegarde dépasse la taille autorisée.');
-          return;
-        }
-        await storeSdk.runTransaction(store, async transaction => {
-          const latest = await transaction.get(remote);
-          if (latest.data()?.updatedAt?.toMillis() !== saved.data()?.updatedAt?.toMillis()) {
-            throw Object.assign(new Error(), { code: 'backup-changed' });
-          }
-          transaction.set(remote, { version: 1, payload, updatedAt: storeSdk.serverTimestamp() });
-        });
+        const payload = await localPayload(profileId);
+        if (saved.exists() && saved.data().payload !== payload
+          && !window.confirm('Remplacer la dernière sauvegarde par la progression de cet appareil ?')) return;
+        const latest = saved.data()?.payload === payload ? revision(saved)
+          : await writeBackup(store, storeSdk, remote, revision(saved), payload);
+        localStorage.setItem(key, latest);
+        showSyncStatus('Progression sauvegardée dans Firebase.');
         again('Progression sauvegardée.');
       }) },
       { label: 'Restaurer', cls: 'bg', fn: run(async () => {
@@ -173,9 +290,10 @@ function showBackup({ auth, authSdk, store, storeSdk }, profileId, message = '')
         if (!profile.exists || pUserId !== profileId) return;
         if (!window.confirm('Appliquer la progression sauvegardée à ce profil sur cet appareil ?')) return;
         const patch = progressFields(data);
+        delete patch.name;
         if (profile.data().badges?.includes('admin_star')) patch.badges.push('admin_star');
-        await local.update(patch);
-        if (pUserId !== profileId) return;
+        db.restoreGameProgress(profileId, patch, competitionScores(data.competitionScores));
+        localStorage.setItem(key, revision(saved));
         Object.assign(pData, patch);
         localStorage.removeItem(chessPuzzleStorageKey());
         applyTheme(pData.theme || 'midnight');
@@ -185,6 +303,7 @@ function showBackup({ auth, authSdk, store, storeSdk }, profileId, message = '')
       }) },
       { label: 'Déconnecter le cloud', cls: 'bg', fn: run(async () => {
         await authSdk.signOut(auth);
+        showSyncStatus('Compte de sauvegarde déconnecté.');
         again('Compte de sauvegarde déconnecté.');
       }) }
     );
@@ -200,8 +319,7 @@ backupButton.addEventListener('click', async () => {
   if (!profileId) return;
   backupButton.disabled = true;
   try {
-    if (!connections.has(profileId)) connections.set(profileId, connect(profileId));
-    showBackup(await connections.get(profileId), profileId);
+    showBackup(await connectionFor(profileId), profileId);
   } catch (error) {
     connections.delete(profileId);
     toast(error.message === 'firebase-config' ? 'La sauvegarde Firebase est en attente de configuration.' : errorMessage(error), 'err');
@@ -209,3 +327,14 @@ backupButton.addEventListener('click', async () => {
     backupButton.disabled = false;
   }
 });
+
+document.addEventListener('pi-games-session', () => scheduleBackup(0));
+document.addEventListener('pi-games-data-changed', ({ detail }) => {
+  if ((detail.col === 'users' && detail.id === pUserId)
+    || (detail.col === 'leaderboard' && detail.ownerId === pUserId)) scheduleBackup();
+});
+window.addEventListener('online', () => scheduleBackup(0));
+window.addEventListener('storage', event => {
+  if (event.key === 'pi_localdb_v1') scheduleBackup();
+});
+if (pUserId) scheduleBackup(0);

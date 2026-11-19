@@ -905,6 +905,7 @@ body[data-sc^="sc-chess"] .wrap{max-width:1200px;min-width:0;width:100%;}
 <div id="sc-account" class="sc account-hub-screen"><div class="head"><div><span class="account-kicker">COMPTE UNIFIÉ</span><h2>Mon compte Pi Games</h2><div class="who">Une seule connexion pour tous vos mini-jeux</div></div><button type="button" class="btn bo sm" onclick="showSc('sc-home')">← Centre de jeux</button></div>
  <div class="account-identity"><span id="account-global-avatar" class="account-global-avatar">👤</span><div><b id="account-global-name">Joueur</b><small>Votre identifiant commun à Pi Master et Pi Chess</small></div></div>
  <button id="cloud-backup" type="button" class="btn bo sm" hidden>Sauvegarde cloud</button>
+ <p id="cloud-sync-state" class="hint" role="status" hidden></p>
  <div class="chess-profile-public-actions"><button type="button" onclick="chessOpenDirectory()">👥 Voir tous les profils</button><button type="button" onclick="chessOpenRankings()">🏆 Classements Échecs</button></div><div class="account-games-grid"><button type="button" onclick="openPiProfileFromAccount()"><span>π</span><b>Profil Pi Master</b><small>Décimales, compétition, badges et classement</small><strong>Ouvrir →</strong></button><button type="button" onclick="chessOpenProfile()"><span>♞</span><b>Profil Échecs</b><small>Victoires, défaites, puzzles et historique</small><strong>Ouvrir →</strong></button></div>
 </div>
 
@@ -1443,16 +1444,19 @@ function registerFail(){ if (++fails >= 5) { lockUntil = Date.now() + 30000; fai
 function makeLocalDb(){
   const KEY = 'pi_localdb_v1';
   const load = () => { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch(e) { return {}; } };
-  const save = d => localStorage.setItem(KEY, JSON.stringify(d));
+  const save = (d, col, id, ownerId) => {
+    localStorage.setItem(KEY, JSON.stringify(d));
+    document.dispatchEvent(new CustomEvent('pi-games-data-changed', { detail: { col, id, ownerId } }));
+  };
   const clone = o => o === undefined ? undefined : JSON.parse(JSON.stringify(o));
   const newId = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
   const mkSnap = (id, v, ref) => ({ id, ref, exists: v !== undefined, data: () => clone(v) });
   function docRef(col, id){
     const ref = { id,
       get: async () => mkSnap(id, (load()[col] || {})[id], ref),
-      set: async data => { const d = load(); (d[col] = d[col] || {})[id] = clone(data); save(d); },
-      update: async patch => { const d = load(); const cur = (d[col] || {})[id]; if (!cur) throw new Error('not found'); Object.assign(cur, clone(patch)); save(d); },
-      delete: async () => { const d = load(); if (d[col]) delete d[col][id]; save(d); }
+      set: async data => { const d = load(); (d[col] = d[col] || {})[id] = clone(data); save(d, col, id, data.userId); },
+      update: async patch => { const d = load(); const cur = (d[col] || {})[id]; if (!cur) throw new Error('not found'); Object.assign(cur, clone(patch)); save(d, col, id, cur.userId); },
+      delete: async () => { const d = load(); const ownerId = d[col]?.[id]?.userId; if (d[col]) delete d[col][id]; save(d, col, id, ownerId); }
     };
     return ref;
   }
@@ -1473,7 +1477,25 @@ function makeLocalDb(){
   }
   return {
     collection: name => ({ ...query(name, [], null, null), doc: id => docRef(name, id || newId()) }),
-    doc: path => { const [col, id] = path.split('/'); return docRef(col, id); }
+    doc: path => { const [col, id] = path.split('/'); return docRef(col, id); },
+    restoreGameProgress: (id, patch, scores) => {
+      const data = load();
+      const user = data.users?.[id];
+      if (!user) throw new Error('Compte local introuvable');
+      Object.assign(user, patch);
+      if (scores) {
+        const board = data.leaderboard ||= {};
+        for (const key of Object.keys(board)) {
+          if (board[key].userId === id) delete board[key];
+        }
+        for (const score of scores) {
+          const key = board[score.id] ? newId() : score.id;
+          board[key] = { userId: id, name: user.name, score: score.score, ts: score.ts,
+            date: new Date(score.ts).toLocaleDateString('fr-FR') };
+        }
+      }
+      save(data, 'users', id);
+    }
   };
 }
 
@@ -1746,6 +1768,7 @@ function goMode(){
   document.getElementById('m-who').textContent = pName;
   gameType = ''; tgtN = 0;
   showSc('sc-home');
+  document.dispatchEvent(new Event('pi-games-session'));
   checkBan();
 }
 function openPiMaster(){
@@ -2627,8 +2650,8 @@ function chessDrawBotPicker(){
 
  document.getElementById('chess-engine-note').textContent=bot.engine==='stockfish'?'Stockfish 19 : UCI_Elo calibré de 1 320 à 3 190. De 3 200 à 3 500, force maximale non limitée (moteur complet à partir de 3 400, téléchargement ~94 Mo). Le chiffre 3 500 est un objectif indicatif et dépend de votre appareil. Connexion requise.':'Moteur local embarqué · Elo indicatif, non calibré en tournoi.';
 }
-function chessSelectBot(id){if(!CHESS_BOTS.some(b=>b.id===id))return;chessSelectedBotId=id;try{localStorage.setItem('pi_chess_bot',id);}catch(e){}chessDrawBotPicker();}
-function chessSetCustomElo(v){chessCustomElo=Math.max(1320,Math.min(3500,Math.round(Number(v)/10)*10||1600));document.getElementById('chess-elo-slider').value=chessCustomElo;document.getElementById('chess-elo-value').textContent=chessCustomElo.toLocaleString('fr-FR')+(chessCustomElo>3190?' · MAX*':' Elo');document.getElementById('chess-preview-rating').textContent=chessCustomElo.toLocaleString('fr-FR');try{localStorage.setItem('pi_chess_elo',chessCustomElo);}catch(e){}}
+function chessSelectBot(id){if(!CHESS_BOTS.some(b=>b.id===id))return;chessSelectedBotId=id;try{localStorage.setItem('pi_chess_bot',id);}catch(e){}if(pUserId&&db)db.doc('users/'+pUserId).update({chessSelectedBotId:id}).catch(()=>{});chessDrawBotPicker();}
+function chessSetCustomElo(v){chessCustomElo=Math.max(1320,Math.min(3500,Math.round(Number(v)/10)*10||1600));document.getElementById('chess-elo-slider').value=chessCustomElo;document.getElementById('chess-elo-value').textContent=chessCustomElo.toLocaleString('fr-FR')+(chessCustomElo>3190?' · MAX*':' Elo');document.getElementById('chess-preview-rating').textContent=chessCustomElo.toLocaleString('fr-FR');try{localStorage.setItem('pi_chess_elo',chessCustomElo);}catch(e){}if(pUserId&&db)db.doc('users/'+pUserId).update({chessCustomElo}).catch(()=>{});}
 function chessStartVsBot(){document.getElementById('chess-time').value=document.getElementById('chess-bot-time').value;startChess('computer');}
 function chessPieceSrc(theme,color,type){return CHESS_PIECE_ASSETS[theme]?.[color+type]||CHESS_PIECE_ASSETS.classic[color+type];}
 function chessPieceElement(color,type,theme=chessPieceTheme){
@@ -2654,6 +2677,8 @@ function chessSetPieceTheme(v){
 }
 
 function chessLoadUserPreferences(){
+ if(CHESS_BOTS.some(bot=>bot.id===pData?.chessSelectedBotId))chessSelectedBotId=pData.chessSelectedBotId;
+ if(Number.isInteger(pData?.chessCustomElo)&&pData.chessCustomElo>=1320&&pData.chessCustomElo<=3500)chessCustomElo=pData.chessCustomElo;
  try{const id=pUserId||'guest';const savedPiece=pData?.chessPieceTheme||localStorage.getItem('pi_chess_piece_theme_'+id);if(CHESS_PIECE_THEMES.some(x=>x.id===savedPiece))chessPieceTheme=savedPiece;else chessPieceTheme='neo';
  const savedBoard=pData?.chessBoardTheme||localStorage.getItem('pi_chess_board_theme_'+id);if(['green','wood','blue','purple'].includes(savedBoard))chessBoardTheme=savedBoard;else chessBoardTheme='green';}catch(e){}
 }
