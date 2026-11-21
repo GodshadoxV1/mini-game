@@ -296,7 +296,7 @@ function showBackup({ auth, authSdk, store, storeSdk }, profileId, message = '')
         localStorage.setItem(key, revision(saved));
         Object.assign(pData, patch);
         localStorage.removeItem(chessPuzzleStorageKey());
-        applyTheme(pData.theme || 'midnight');
+        applyTheme(pData.theme || 'club');
         chessLoadUserPreferences();
         openGlobalAccount();
         again('Progression restaurée.');

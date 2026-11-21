@@ -1,4 +1,4 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}
+<!doctype html><html lang="fr"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}
 /* Thèmes personnalisables */
 body[data-theme="cherry"]{--bg:#211018;--surface:#321827;--surface2:#482238;--surface3:#60304b;--border:#75405d;--border2:#925270;--accent:#ff5c8a;--accent2:#ff9ab5}
 body[data-theme="ember"]{--bg:#21170e;--surface:#302115;--surface2:#49301b;--surface3:#624125;--border:#76502d;--border2:#98683a;--accent:#f59e0b;--accent2:#fbbf24}
@@ -134,8 +134,9 @@ body[data-theme="light"]{--bg:#f3f5f8;--surface:#fff;--surface2:#edf0f5;--surfac
 #sc-chess-profile{align-items:stretch;gap:16px;width:100%;max-width:1080px;min-width:0;color:#f0f4e9;font-family:Inter,-apple-system,Segoe UI,system-ui,sans-serif}
 #sc-chess-profile>.chess-profile-cover,#sc-chess-profile>.chess-profile-titlebar,#sc-chess-profile>.chess-profile-stat-grid,#sc-chess-profile>.chess-profile-lower{width:100%}
 #sc-chess-profile .chess-profile-cover{min-height:185px}
-</style></head><body>
-<title>π Master · Pi Chess — Bots & Stockfish</title>
+</style>
+<title>Pi Games · Échecs et mémoire</title>
+<meta name="theme-color" content="#f4f1e8">
 <style>
 :root{
   --bg:#0e1116;
@@ -838,6 +839,10 @@ body[data-sc^="sc-chess"] .wrap{max-width:1200px;min-width:0;width:100%;}
 </style>
 
 
+<link rel="stylesheet" href="./site-design.css">
+<link rel="stylesheet" href="./chess-design.css">
+<link rel="stylesheet" href="./welcome.css">
+</head><body>
 <div id="loading"><div class="spin"></div><span style="color:var(--dim);font-size:.82rem">Chargement…</span></div>
 <div id="toast"></div>
 <button id="admin-fab" type="button" style="display:none" onclick="promptAdmin()"><i></i>Administration</button>
@@ -846,9 +851,18 @@ body[data-sc^="sc-chess"] .wrap{max-width:1200px;min-width:0;width:100%;}
 
 <!-- CONNEXION -->
 <div id="sc-w" class="sc">
-  <div class="logo">π</div>
-  <h1>π Master</h1>
-  <p class="sub">Entraînement à la mémorisation des décimales de π</p>
+  <header class="club-masthead">
+    <span class="club-wordmark"><span class="club-monogram" aria-hidden="true">π</span>Pi Games</span>
+    <button type="button" class="club-rank-link" onclick="goLB()">Classement Pi Master <span aria-hidden="true">↗</span></button>
+  </header>
+  <main class="club-welcome">
+  <div class="club-cover">
+    <img src="./club-chess.webp" alt="" width="1122" height="1402" fetchpriority="high">
+    <div class="club-cover-title"><p>Pi Chess <span aria-hidden="true">/</span> Pi Master</p><h1>Échecs <i>&amp;</i><br>mémoire.</h1></div>
+  </div>
+  <section class="club-entry" aria-labelledby="club-entry-heading">
+  <h2 id="club-entry-heading">Bienvenue<br> au club<span>.</span></h2>
+  <p class="club-intro">Retrouvez vos jeux, vos scores et votre progression.</p>
   <div class="card auth">
     <div class="seg">
       <button type="button" id="tab-login" class="on" onclick="setAuthMode('login')">Connexion</button>
@@ -866,9 +880,9 @@ body[data-sc^="sc-chess"] .wrap{max-width:1200px;min-width:0;width:100%;}
       <button class="btn bp block" type="submit" id="btn-auth">Se connecter</button>
     </form>
   </div>
-  <button class="btn bg" type="button" onclick="goLB()">Voir le classement</button>
-  <p class="hint" id="local-note" style="display:none;text-align:center">Mode local : les données sont enregistrées dans ce navigateur.</p>
-  <p class="mono-foot">π = 3.14159 26535 89793 23846…</p>
+  <p class="hint" id="local-note" style="display:none">La progression est enregistrée sur cet appareil. Pour la retrouver ailleurs, activez la sauvegarde cloud dans Mon compte.</p>
+  </section>
+  </main>
 </div>
 
 
@@ -876,7 +890,7 @@ body[data-sc^="sc-chess"] .wrap{max-width:1200px;min-width:0;width:100%;}
 <div id="sc-home" class="sc">
   <div class="head">
     <div>
-      <h2>🎮 Centre de jeux</h2>
+      <h2>Centre de jeux</h2>
       <div class="who">Choisissez un univers pour commencer</div>
     </div>
     <div class="row">
@@ -930,28 +944,27 @@ body[data-sc^="sc-chess"] .wrap{max-width:1200px;min-width:0;width:100%;}
 
 <!-- HUB ÉCHECS · nouvelle expérience -->
 <div id="sc-chess" class="sc chess-screen chess-lobby">
+<nav class="arena-rail" aria-label="Navigation du club">
+  <button class="arena-mark" onclick="openChessHub()"><i>π</i> Pi Chess</button>
+  <button onclick="openChessHub()">Salle de jeu</button><button onclick="chessOpenBotPicker()">Robots</button><button onclick="chessOpenPuzzleHub()">Puzzles</button>
+  <button onclick="chessOpenRankings('bot')">Classements</button><button onclick="chessExitToHome()">← Pi Games</button>
+</nav>
   <header class="chess-appbar">
     <div class="chess-brand"><span class="chess-brand-icon">♞</span><span class="chess-brand-type"><strong>PI<span>CHESS</span></strong><small>L’ARÈNE DES ÉCHECS</small></span></div>
     <div class="chess-nav"><button type="button" class="chess-nav-button" onclick="chessOpenProfile()">♟ Mon profil Échecs</button><button type="button" class="chess-nav-button" onclick="chessExitToHome()"><span>←</span> Centre de jeux</button></div>
   </header>
-  <section class="chess-hero">
-    <div class="chess-hero-content">
-      <span class="chess-eyebrow"><i></i> VOTRE UNIVERS D’ÉCHECS</span>
-      <h1>Votre prochain<br><em>grand coup.</em></h1>
-      <p>Entraînez votre esprit, relevez des défis et vivez chaque partie comme un vrai duel.</p>
-      <div class="chess-hero-actions"><button class="chess-cta" type="button" onclick="chessOpenBotPicker()">♞ <span>Jouer maintenant</span> <b>↗</b></button><button class="chess-cta-secondary" type="button" onclick="chessOpenPuzzleHub()">◈ Résoudre un puzzle</button></div>
-      <div class="chess-hero-trust"><span>✓ Règles officielles</span><span>✓ À votre rythme</span><span>✓ Gratuit</span></div>
-    </div>
-    <div class="chess-hero-art" aria-hidden="true"><div class="chess-hero-light"></div><div class="chess-mini-board"><span class="chess-mini-sq light"><span class="chess-mini-piece">♜</span></span><span class="chess-mini-sq dark"><span class="chess-mini-piece">♞</span></span><span class="chess-mini-sq light"><span class="chess-mini-piece">♝</span></span><span class="chess-mini-sq dark"><span class="chess-mini-piece">♛</span></span><span class="chess-mini-sq light"><span class="chess-mini-piece">♚</span></span><span class="chess-mini-sq dark"><span class="chess-mini-piece">♝</span></span><span class="chess-mini-sq light"><span class="chess-mini-piece">♞</span></span><span class="chess-mini-sq dark"><span class="chess-mini-piece">♜</span></span><span class="chess-mini-sq dark"><span class="chess-mini-piece">♟</span></span><span class="chess-mini-sq light"><span class="chess-mini-piece">♟</span></span><span class="chess-mini-sq dark"><span class="chess-mini-piece">♟</span></span><span class="chess-mini-sq light"><span class="chess-mini-piece">♟</span></span><span class="chess-mini-sq dark"><span class="chess-mini-piece">♟</span></span><span class="chess-mini-sq light"><span class="chess-mini-piece">♟</span></span><span class="chess-mini-sq dark"><span class="chess-mini-piece">♟</span></span><span class="chess-mini-sq light"><span class="chess-mini-piece">♟</span></span><span class="chess-mini-sq light"></span><span class="chess-mini-sq dark"></span><span class="chess-mini-sq light"><span class="chess-mini-piece">♞</span></span><span class="chess-mini-sq dark"></span><span class="chess-mini-sq light"></span><span class="chess-mini-sq dark"></span><span class="chess-mini-sq light"></span><span class="chess-mini-sq dark"></span><span class="chess-mini-sq dark"></span><span class="chess-mini-sq light"></span><span class="chess-mini-sq dark"></span><span class="chess-mini-sq light"></span><span class="chess-mini-sq dark"><span class="chess-mini-piece">♟</span></span><span class="chess-mini-sq light"></span><span class="chess-mini-sq dark"></span><span class="chess-mini-sq light"></span><span class="chess-mini-sq light"></span><span class="chess-mini-sq dark"></span><span class="chess-mini-sq light"></span><span class="chess-mini-sq dark"><span class="chess-mini-piece">♙</span></span><span class="chess-mini-sq light"></span><span class="chess-mini-sq dark"></span><span class="chess-mini-sq light"></span><span class="chess-mini-sq dark"></span><span class="chess-mini-sq dark"></span><span class="chess-mini-sq light"></span><span class="chess-mini-sq dark"></span><span class="chess-mini-sq light"></span><span class="chess-mini-sq dark"></span><span class="chess-mini-sq light"><span class="chess-mini-piece">♘</span></span><span class="chess-mini-sq dark"></span><span class="chess-mini-sq light"></span><span class="chess-mini-sq light"><span class="chess-mini-piece">♙</span></span><span class="chess-mini-sq dark"><span class="chess-mini-piece">♙</span></span><span class="chess-mini-sq light"><span class="chess-mini-piece">♙</span></span><span class="chess-mini-sq dark"></span><span class="chess-mini-sq light"><span class="chess-mini-piece">♙</span></span><span class="chess-mini-sq dark"><span class="chess-mini-piece">♙</span></span><span class="chess-mini-sq light"><span class="chess-mini-piece">♙</span></span><span class="chess-mini-sq dark"><span class="chess-mini-piece">♙</span></span><span class="chess-mini-sq dark"><span class="chess-mini-piece">♖</span></span><span class="chess-mini-sq light"><span class="chess-mini-piece">♘</span></span><span class="chess-mini-sq dark"><span class="chess-mini-piece">♗</span></span><span class="chess-mini-sq light"><span class="chess-mini-piece">♕</span></span><span class="chess-mini-sq dark"><span class="chess-mini-piece">♔</span></span><span class="chess-mini-sq light"><span class="chess-mini-piece">♗</span></span><span class="chess-mini-sq dark"></span><span class="chess-mini-sq light"><span class="chess-mini-piece">♖</span></span></div><div class="chess-hero-floating"><span>♛</span><div><b>À vous de jouer</b><small>Chaque coup compte</small></div><i>●</i></div></div>
-  </section>
-  <div class="chess-section-heading"><div><span class="chess-eyebrow section">CHOISISSEZ VOTRE DÉFI</span><h2>Comment voulez-vous jouer ?</h2></div><span class="chess-section-count">4 façons de jouer <span class="chess-green-dot">●</span></span></div>
-  <div class="chess-mode-grid">
-    <button class="chess-mode-card chess-mode-ai" type="button" onclick="chessOpenBotPicker()"><span class="cmc-top"><span class="cmc-icon">♞</span><span class="cmc-tag">POPULAIRE</span></span><b>Contre l’ordinateur</b><small>Choisissez un bot, son Elo et son style de jeu.</small><span class="cmc-footer">8 adversaires <strong>Choisir <span>↗</span></strong></span></button>
-    <button class="chess-mode-card chess-mode-duel" type="button" onclick="chessOpenDuelSetup()"><span class="cmc-top"><span class="cmc-icon">⚔</span><span class="cmc-tag">LOCAL</span></span><b>Deux joueurs</b><small>Duels classés entre deux comptes, ou partie amicale sur le même écran.</small><span class="cmc-footer">1 contre 1 <strong>Jouer <span>↗</span></strong></span></button>
-    <button class="chess-mode-card chess-mode-puzzle" type="button" onclick="chessOpenPuzzleHub()"><span class="cmc-top"><span class="cmc-icon">◈</span><span class="cmc-tag">TACTIQUE</span></span><b>Puzzles</b><small>Repérez le coup décisif et entraînez votre vision.</small><span class="cmc-footer">12 défis <strong>Résoudre <span>↗</span></strong></span></button>
-    <button class="chess-mode-card chess-mode-explore" type="button" onclick="startChess('analysis')"><span class="cmc-top"><span class="cmc-icon">♜</span><span class="cmc-tag">LIBRE</span></span><b>Échiquier libre</b><small>Explorez les ouvertures et rejouez vos propres idées.</small><span class="cmc-footer">À votre rythme <strong>Explorer <span>↗</span></strong></span></button>
+  <h1 class="arena-title">Salle de jeu</h1>
+  <div class="arena-deck">
+    <section class="arena-quick"><h2>Partie rapide</h2><label for="arena-time">Temps par joueur</label>
+      <select id="arena-time"><option value="180">3 minutes</option><option value="300" selected>5 minutes</option><option value="600">10 minutes</option><option value="0">Sans limite</option></select>
+      <button class="arena-primary" onclick="chessQuickStart()">Jouer contre le bot</button>
+      <button onclick="chessOpenDuelSetup()">Duel sur cet appareil</button>
+    </section>
+    <button class="arena-tile" onclick="chessOpenBotPicker()"><span class="arena-diagram" data-position="start" aria-hidden="true"></span><strong>Adversaires du club</strong><small>Choisir un robot ↗</small></button>
+    <button class="arena-tile" onclick="chessOpenPuzzleHub()"><span class="arena-diagram" data-position="tactics" aria-hidden="true"></span><strong>Puzzles tactiques</strong><small>Ouvrir les défis ↗</small></button>
+    <button class="arena-tile" onclick="startChess('analysis')"><span class="arena-diagram" data-position="opening" aria-hidden="true"></span><strong>Échiquier libre</strong><small>Analyser une position ↗</small></button>
   </div>
-  
+  <section class="arena-recent"><h2>Dernières parties classées</h2><ul id="arena-history"></ul></section>
  <section class="chess-community-links" aria-label="Compétition et joueurs">
   <button type="button" onclick="chessOpenRankings('bot')"><span>🤖</span><div><b>Classement Elo bots</b><small>Comparez les joueurs contre les bots.</small></div></button>
   <button type="button" onclick="chessOpenRankings('human')"><span>🏆</span><div><b>Classement Elo joueurs</b><small>Duels entre vrais comptes.</small></div></button>
@@ -961,7 +974,7 @@ body[data-sc^="sc-chess"] .wrap{max-width:1200px;min-width:0;width:100%;}
   <div class="chess-menu-appearance-heading"><div><span class="chess-eyebrow section">PERSONNALISATION</span><h2>Votre échiquier, votre style.</h2><p>Choisissez vos pièces et votre plateau avant de jouer. Vos préférences sont liées à votre compte.</p></div><span class="chess-menu-appearance-icon">♜</span></div>
   <div class="chess-menu-appearance-columns">
     <div class="chess-theme-setting"><div class="chess-theme-title">🎨 Couleur du plateau <span>4 couleurs</span></div><div class="chess-board-themes"><button type="button" class="chess-theme-choice active" data-chess-theme="green" title="Vert classique" aria-label="Vert classique" onclick="chessSetBoardTheme('green')"><span style="--a:#eeeed2;--b:#769656"></span></button><button type="button" class="chess-theme-choice" data-chess-theme="wood" title="Bois" aria-label="Bois" onclick="chessSetBoardTheme('wood')"><span style="--a:#f0d9b5;--b:#b58863"></span></button><button type="button" class="chess-theme-choice" data-chess-theme="blue" title="Bleu" aria-label="Bleu" onclick="chessSetBoardTheme('blue')"><span style="--a:#e5eaf0;--b:#7898ae"></span></button><button type="button" class="chess-theme-choice" data-chess-theme="purple" title="Violet" aria-label="Violet" onclick="chessSetBoardTheme('purple')"><span style="--a:#eee6f5;--b:#977ab4"></span></button></div></div>
-    <div class="chess-theme-setting chess-piece-setting"><div class="chess-theme-title">♞ Style des pièces <span id="chess-piece-theme-label">Neo Chess</span></div><div id="chess-piece-themes" class="chess-piece-themes" aria-label="Choix du style des pièces"></div><small>Neo Chess : style intégré inspiré de Chess.com. Le thème Chess.com Neo charge ses images depuis Chess.com avec un secours intégré.</small></div>
+    <div class="chess-theme-setting chess-piece-setting"><div class="chess-theme-title">♞ Style des pièces <span id="chess-piece-theme-label">Neo Chess</span></div><div id="chess-piece-themes" class="chess-piece-themes" aria-label="Choix du style des pièces"></div></div>
   </div>
 </section>
   <div class="chess-features-bar"><div><span class="chess-feature-icon">♚</span><span><b>Toutes les règles</b><small>Roque, promotion et échec et mat</small></span></div><div><span class="chess-feature-icon">◷</span><span><b>Cadences au choix</b><small>Bullet, blitz, rapide ou libre</small></span></div><div><span class="chess-feature-icon">↗</span><span><b>Historique des coups</b><small>Rejouez et exportez en PGN</small></span></div></div>
@@ -976,7 +989,7 @@ body[data-sc^="sc-chess"] .wrap{max-width:1200px;min-width:0;width:100%;}
  <div id="chess-rank-criteria" class="chess-rank-criteria">⌛ Classement principal : compte de 7 jours minimum, 20 parties classées dans la catégorie et activité sur les 90 derniers jours.</div>
  <div class="chess-rank-list" id="chess-rank-list"></div>
  <div id="chess-rank-provisional" class="chess-provisional" hidden><div class="chess-provisional-head"><strong>📈 En progression</strong><small>Joueurs non encore éligibles au Top · profils consultables</small></div><div class="chess-rank-list" id="chess-rank-provisional-list"></div></div>
- <p class="chess-ranking-hint">Notation Glicko inspirée du fonctionnement de Chess.com (avec incertitude RD). Les Elo Pi Chess ne sont pas des notes officielles Chess.com ou FIDE. Classements communs entre appareils : base de données partagée requise.</p>
+ <p class="chess-ranking-hint">Pi Chess utilise le système Glicko pour estimer le niveau et la fiabilité de la cote. Ce classement regroupe les profils présents sur cet appareil.</p>
 </div>
 <div id="sc-chess-directory" class="sc chess-screen">
  <header class="chess-appbar"><div class="chess-brand"><span class="chess-brand-icon">♞</span><span class="chess-brand-type"><strong>PI<span>CHESS</span></strong><small>JOUEURS PI GAMES</small></span></div><div class="chess-nav"><button class="chess-nav-button" onclick="chessOpenRankings()">Classements</button><button class="chess-nav-button" onclick="openChessHub()">← Menu Échecs</button></div></header>
@@ -998,16 +1011,25 @@ body[data-sc^="sc-chess"] .wrap{max-width:1200px;min-width:0;width:100%;}
 
 <!-- CHOIX DU BOT · sélection avant le match -->
 <div id="sc-chess-bots" class="sc chess-screen chess-bots-screen">
+<nav class="arena-rail" aria-label="Navigation du club">
+  <button class="arena-mark" onclick="openChessHub()"><i>π</i> Pi Chess</button>
+  <button onclick="openChessHub()">Salle de jeu</button><button onclick="chessOpenBotPicker()">Robots</button><button onclick="chessOpenPuzzleHub()">Puzzles</button>
+  <button onclick="chessOpenRankings('bot')">Classements</button><button onclick="chessExitToHome()">← Pi Games</button>
+</nav>
   <header class="chess-appbar">
     <div class="chess-brand"><span class="chess-brand-icon">♞</span><span class="chess-brand-type"><strong>PI<span>CHESS</span></strong><small>CHOIX DE L’ADVERSAIRE</small></span></div>
     <div class="chess-nav"><button type="button" class="chess-nav-button" onclick="chessOpenProfile()">Mon profil</button><button type="button" class="chess-nav-button" onclick="openChessHub()">← Modes de jeu</button></div>
   </header>
-  <div class="chess-bots-heading"><span class="chess-eyebrow"><i></i> JOUER CONTRE UN BOT</span><h2>Choisissez votre <em>adversaire.</em></h2><p>Huit personnalités, du premier défi à un moteur de haut niveau. Sélectionnez un bot avant de lancer la partie.</p></div>
+  <h1 class="arena-title">Face aux robots</h1>
   <div class="chess-bots-layout">
-    <section class="chess-bot-gallery" id="chess-bot-gallery" aria-label="Liste des bots"></section>
+    <section class="arena-table" aria-label="Position de départ">
+      <strong id="arena-opponent"></strong>
+      <div class="arena-diagram arena-large" data-position="start" aria-hidden="true"></div>
+      <strong id="arena-player">Vous · Blancs</strong>
+    </section>
     <aside class="chess-bot-setup">
-      <div class="chess-setup-head"><span>VOTRE ADVERSAIRE</span><span class="chess-setup-indicator">● Prêt à jouer</span></div>
-      <div class="chess-bot-preview"><div class="chess-preview-avatar" id="chess-preview-avatar">🐼</div><h3 id="chess-preview-name">Milo</h3><div class="chess-preview-elo"><strong id="chess-preview-rating">600</strong><span>Elo indicatif</span></div><p id="chess-preview-desc">Un adversaire idéal pour apprendre.</p></div>
+      <div class="chess-bot-preview"><div class="chess-preview-avatar" id="chess-preview-avatar"></div><h3 id="chess-preview-name"></h3><div class="chess-preview-elo"><strong id="chess-preview-rating"></strong><span>Elo indicatif</span></div><p id="chess-preview-desc"></p></div>
+      <section class="chess-bot-gallery" id="chess-bot-gallery" aria-label="Choisir un adversaire"></section>
       <div class="chess-custom-elo" id="chess-custom-elo" hidden>
         <div class="chess-elo-header"><label for="chess-elo-slider">Force de Stockfish</label><output id="chess-elo-value" for="chess-elo-slider">1600 Elo</output></div>
         <input type="range" id="chess-elo-slider" min="1320" max="3500" step="10" value="1600" oninput="chessSetCustomElo(this.value)">
@@ -1018,7 +1040,7 @@ body[data-sc^="sc-chess"] .wrap{max-width:1200px;min-width:0;width:100%;}
       <div class="chess-setup-field"><span class="chess-setup-visual-hint">♜ Les pièces et le plateau se personnalisent dans le menu Échecs.</span></div>
       <button type="button" class="chess-cta chess-start-bot" onclick="chessStartVsBot()"><span>♞ Lancer la partie</span><b>↗</b></button>
       <p class="chess-setup-note" id="chess-engine-note">Les bots avancés utilisent Stockfish dans le navigateur. Une connexion Internet est nécessaire pour charger le moteur.</p>
-      <p class="chess-licence">Moteur <a href="https://github.com/nmrugg/stockfish.js" target="_blank" rel="noopener noreferrer">Stockfish.js · GPLv3</a> · Pièces vectorielles intégrées, adaptées de polices libres. Design original inspiré de Chess.com.</p>
+      <p class="chess-licence">Moteur <a href="https://github.com/nmrugg/stockfish.js" target="_blank" rel="noopener noreferrer">Stockfish.js · GPLv3</a> · Pièces vectorielles intégrées, adaptées de polices libres.</p>
     </aside>
   </div>
 </div>
@@ -1273,7 +1295,7 @@ body[data-sc^="sc-chess"] .wrap{max-width:1200px;min-width:0;width:100%;}
   <h2>Classement Compétition</h2>
   <p class="sub">Meilleur nombre de décimales retenues par joueur</p>
   <div class="lb-tabs">
-    <button class="btn bp" id="lb-tab-life" onclick="setLBPeriod('lifetime')">Lifetime</button>
+    <button class="btn bp" id="lb-tab-life" onclick="setLBPeriod('lifetime')">Depuis toujours</button>
     <button class="btn bo" id="lb-tab-week" onclick="setLBPeriod('weekly')">Cette semaine</button>
   </div>
   <div class="lb-full" id="lb-list"></div>
@@ -1394,6 +1416,7 @@ let lbPeriod = 'lifetime';
 let profileReturnScreen = 'sc-m';
 let viewingProfileId = null;
 const THEMES = [
+  {id:'club',name:'Club',desc:'Ivoire et vert forêt'},
   {id:'midnight',name:'Minuit',desc:'Sombre classique'},
   {id:'amoled',name:'AMOLED',desc:'Noir profond'},
   {id:'ocean',name:'Océan',desc:'Bleu cyan'},
@@ -1526,7 +1549,7 @@ function makeLocalDb(){
           hideLoading();
           if (banActive(u)) { showBan(u); return; }
           if (u.banned) { await liftBan(s.uid); pData = { ...u, ...CLEAR_BAN }; }   // bannissement expiré
-          applyTheme(u.theme || 'midnight'); refreshAdminFab(); goMode(); return;
+          applyTheme(u.theme || 'club'); refreshAdminFab(); goMode(); return;
         }
       }
       localStorage.removeItem('pi_session');
@@ -1588,7 +1611,7 @@ async function handleAuth(){
       const salt = newSalt();
       const pwHash = await hashPw(pw, salt);
       const ref = db.collection('users').doc();
-      const data = { name, nameLower:name.toLowerCase(), salt, pwHash, games:0, best:0, totalPi:0, badges:[], theme:'midnight', perfectGames:0, createdAt:Date.now() };
+      const data = { name, nameLower:name.toLowerCase(), salt, pwHash, games:0, best:0, totalPi:0, badges:[], theme:'club', perfectGames:0, createdAt:Date.now() };
       await ref.set(data);
       startSession(ref.id, data);
     } else {
@@ -1613,6 +1636,7 @@ function startSession(uid, data){
     showBan(data); return;
   }
   try { localStorage.setItem('pi_session', JSON.stringify({ uid, tok:data.pwHash })); } catch(e){}
+  applyTheme(data.theme || 'club');
   refreshAdminFab();
   document.getElementById('inp-pw').value = '';
   document.getElementById('inp-pw2').value = '';
@@ -1785,7 +1809,7 @@ async function goLB(){
   document.getElementById('lb-play').style.display = pUserId ? 'inline-flex' : 'none';
   document.getElementById('lb-tab-life').className = 'btn bp';
   document.getElementById('lb-tab-week').className = 'btn bo';
-  document.querySelector('#sc-lb h2').textContent = 'Classement Lifetime';
+  document.querySelector('#sc-lb h2').textContent = 'Classement général';
   await renderLB(); showSc('sc-lb');
 }
 function leaveLB(){ if (pUserId) goMode(); else showSc('sc-w'); }
@@ -1845,11 +1869,12 @@ function leaveProfile(){
   else showSc('sc-w');
 }
 function applyTheme(theme){
-  const valid = THEMES.some(t=>t.id===theme) ? theme : 'midnight';
+  const valid = THEMES.some(t=>t.id===theme) ? theme : 'club';
   document.body.dataset.theme = valid;
 }
 function themeCard(t, selected){
   const swatches = {
+    club:'linear-gradient(90deg,#f4f1e8 50%,#244a38 50%)',
     midnight:'linear-gradient(90deg,#0e1116,#4285f4)',
     amoled:'linear-gradient(90deg,#000,#8b5cf6)',
     ocean:'linear-gradient(90deg,#071923,#22b8cf)',
@@ -1929,7 +1954,7 @@ async function renderProfile(uid = pUserId){
   unlocked.slice(0,8).forEach(b=>{ const chip=mk('span','profile-badge-chip',`${b.icon} ${b.name}`); showcase.appendChild(chip); });
   if (!unlocked.length) showcase.textContent = 'Aucun badge débloqué pour le moment.';
   ALL_BADGES.forEach(b => el.appendChild(badgeTile(b, owned.has(b.id))));
-  document.getElementById('pf-themes').innerHTML = THEMES.map(t=>themeCard(t, (user.theme||'midnight')===t.id)).join('');
+  document.getElementById('pf-themes').innerHTML = THEMES.map(t=>themeCard(t, (user.theme||'club')===t.id)).join('');
   const banner = document.getElementById('pf-banner');
   banner.style.background = user.banner || 'linear-gradient(125deg,var(--accent),var(--surface3))';
   document.getElementById('pf-banner-title').textContent = n;
@@ -1942,13 +1967,13 @@ async function renderProfile(uid = pUserId){
     const [lifeTop, weekTop] = await Promise.all([topScores(10, 'lifetime'), topScores(10, 'weekly')]);
     const lifeRank = lifeTop.findIndex(row => row.userId === uid);
     const weekRank = weekTop.findIndex(row => row.userId === uid);
-    if (lifeRank >= 0) rankWrap.insertAdjacentHTML('beforeend', `<span class="pf-rank-chip">🏆 TOP 10 Lifetime · #${lifeRank+1}</span>`);
+    if (lifeRank >= 0) rankWrap.insertAdjacentHTML('beforeend', `<span class="pf-rank-chip">🏆 TOP 10 général · #${lifeRank+1}</span>`);
     if (weekRank >= 0) rankWrap.insertAdjacentHTML('beforeend', `<span class="pf-rank-chip week">⚡ TOP 10 Semaine · #${weekRank+1}</span>`);
     if (lifeRank < 0 && weekRank < 0) rankWrap.innerHTML = '<span class="sect-t">Classements : pas encore dans le Top 10</span>';
   } catch(e) { rankWrap.innerHTML = ''; }
   document.getElementById('pf-banners').innerHTML = PROFILE_BANNERS.map((b,i)=>`<button type="button" class="banner-choice${(user.bannerIndex||0)===i?' active':''}" title="Bannière ${i+1}" style="background:${b}" onclick="chooseBanner(${i})" ${isOwn?'':'disabled'}></button>`).join('');
   document.getElementById('pf-emojis').innerHTML = PROFILE_EMOJIS.map(e=>`<button type="button" class="emoji-choice${(user.avatarEmoji||'')===e?' active':''}" onclick="chooseAvatarEmoji('${e}')" ${isOwn?'':'disabled'}>${e}</button>`).join('');
-  if (isOwn) applyTheme(user.theme || 'midnight');
+  if (isOwn) applyTheme(user.theme || 'club');
 }
 async function checkAndAwardBadges(userData){
   const owned = new Set(userData.badges || []);
@@ -2226,7 +2251,7 @@ function setLBPeriod(period){
   lbPeriod = period;
   document.getElementById('lb-tab-life').className = `btn ${period==='lifetime'?'bp':'bo'}`;
   document.getElementById('lb-tab-week').className = `btn ${period==='weekly'?'bp':'bo'}`;
-  document.querySelector('#sc-lb h2').textContent = period === 'weekly' ? 'Classement hebdomadaire' : 'Classement Lifetime';
+  document.querySelector('#sc-lb h2').textContent = period === 'weekly' ? 'Classement hebdomadaire' : 'Classement général';
   renderLB();
 }
 async function renderLB(){
@@ -2636,7 +2661,7 @@ const CHESS_ENGINE_BASE='https://cdn.jsdelivr.net/npm/stockfish@19.0.1/bin/';
 try{const b=localStorage.getItem('pi_chess_bot');if(CHESS_BOTS.some(x=>x.id===b))chessSelectedBotId=b;const e=Number(localStorage.getItem('pi_chess_elo'));if(e>=1320&&e<=3500)chessCustomElo=e;const p=localStorage.getItem('pi_chess_piece_theme');if(CHESS_PIECE_THEMES.some(x=>x.id===p))chessPieceTheme=p;}catch(e){}
 function chessActiveBot(){return CHESS_BOTS.find(b=>b.id===chessSelectedBotId)||CHESS_BOTS[1];}
 function chessBotRating(bot=chessActiveBot()){return bot.custom?chessCustomElo:bot.elo;}
-function chessOpenBotPicker(){chessLoadUserPreferences();chessClearPending();chessPauseClock();chessStopStockfish();chessDrawBotPicker();showSc('sc-chess-bots');}
+function chessOpenBotPicker(){chessLoadUserPreferences();chessClearPending();chessPauseClock();chessStopStockfish();chessDrawBotPicker();chessDiagram(document.querySelector('.arena-large'));showSc('sc-chess-bots');}
 function chessDrawBotPicker(){
  const list=document.getElementById('chess-bot-gallery');if(!list)return;
  list.innerHTML='';for(const bot of CHESS_BOTS){
@@ -2645,13 +2670,52 @@ function chessDrawBotPicker(){
   b.innerHTML='<span class="chess-bot-face">'+bot.emoji+'</span><span class="chess-bot-meta"><strong>'+bot.name+'</strong><small>'+bot.level+'</small><span class="chess-bot-elo"><b>'+(bot.custom?'Personnalisable':bot.elo)+'</b> '+(bot.custom?'Elo':'Elo env.')+'</span></span><span class="chess-bot-select-icon">'+(bot.id===chessSelectedBotId?'✓':'›')+'</span>';
   b.onclick=()=>chessSelectBot(bot.id);list.appendChild(b);
  }
- const bot=chessActiveBot();document.getElementById('chess-preview-avatar').textContent=bot.emoji;document.getElementById('chess-preview-avatar').style.background='linear-gradient(140deg,'+bot.color+',#283a2a)';document.getElementById('chess-preview-name').textContent=bot.name;document.getElementById('chess-preview-rating').textContent=chessBotRating(bot).toLocaleString('fr-FR');document.getElementById('chess-preview-desc').textContent=bot.bio;
+ const bot=chessActiveBot();document.getElementById('arena-opponent').textContent=bot.name+' · Noirs';document.getElementById('arena-player').textContent=(pName||'Vous')+' · Blancs';document.getElementById('chess-preview-avatar').textContent=bot.emoji;document.getElementById('chess-preview-avatar').style.background='linear-gradient(140deg,'+bot.color+',#283a2a)';document.getElementById('chess-preview-name').textContent=bot.name;document.getElementById('chess-preview-rating').textContent=chessBotRating(bot).toLocaleString('fr-FR');document.getElementById('chess-preview-desc').textContent=bot.bio;
  document.getElementById('chess-custom-elo').hidden=!bot.custom;document.getElementById('chess-elo-slider').value=chessCustomElo;document.getElementById('chess-elo-value').textContent=chessCustomElo.toLocaleString('fr-FR')+(chessCustomElo>3190?' · MAX*':' Elo');
 
  document.getElementById('chess-engine-note').textContent=bot.engine==='stockfish'?'Stockfish 19 : UCI_Elo calibré de 1 320 à 3 190. De 3 200 à 3 500, force maximale non limitée (moteur complet à partir de 3 400, téléchargement ~94 Mo). Le chiffre 3 500 est un objectif indicatif et dépend de votre appareil. Connexion requise.':'Moteur local embarqué · Elo indicatif, non calibré en tournoi.';
 }
 function chessSelectBot(id){if(!CHESS_BOTS.some(b=>b.id===id))return;chessSelectedBotId=id;try{localStorage.setItem('pi_chess_bot',id);}catch(e){}if(pUserId&&db)db.doc('users/'+pUserId).update({chessSelectedBotId:id}).catch(()=>{});chessDrawBotPicker();}
 function chessSetCustomElo(v){chessCustomElo=Math.max(1320,Math.min(3500,Math.round(Number(v)/10)*10||1600));document.getElementById('chess-elo-slider').value=chessCustomElo;document.getElementById('chess-elo-value').textContent=chessCustomElo.toLocaleString('fr-FR')+(chessCustomElo>3190?' · MAX*':' Elo');document.getElementById('chess-preview-rating').textContent=chessCustomElo.toLocaleString('fr-FR');try{localStorage.setItem('pi_chess_elo',chessCustomElo);}catch(e){}if(pUserId&&db)db.doc('users/'+pUserId).update({chessCustomElo}).catch(()=>{});}
+function chessQuickStart(){
+  document.getElementById('chess-bot-time').value=document.getElementById('arena-time').value;
+  chessStartVsBot();
+}
+function chessDiagram(board){
+  const layouts={
+    start:'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR',
+    tactics:'6k1/5ppp/8/1B6/8/5Q2/5PPP/6K1',
+    opening:'r1bqkb1r/pppp1ppp/2n2n2/4p3/2B1P3/2NP1N2/PPP2PPP/R1BQK2R'
+  };
+  board.dataset.theme=chessBoardTheme;
+  const squares=document.createDocumentFragment();
+  layouts[board.dataset.position].split('/').forEach((row,r)=>{
+    const cells=row.replace(/[1-8]/g,n=>'.'.repeat(Number(n)));
+    Array.from(cells).forEach((piece,c)=>{
+      const cell=document.createElement('span');
+      cell.className=(r+c)%2?'shade':'pale';
+      if(piece!=='.'){
+        const img=document.createElement('img');img.alt='';img.draggable=false;
+        img.src=chessPieceSrc(chessPieceTheme,piece===piece.toUpperCase()?'w':'b',piece.toLowerCase());cell.append(img);
+      }
+      if(board.classList.contains('arena-large')){
+        if(c===0)cell.dataset.rank=8-r;
+        if(r===7)cell.dataset.file='abcdefgh'[c];
+      }
+      squares.append(cell);
+    });
+  });
+  board.replaceChildren(squares);
+}
+function chessDashboard(){
+  document.querySelectorAll('#sc-chess .arena-diagram').forEach(chessDiagram);
+  const history=document.getElementById('arena-history');history.replaceChildren();
+  const games=[...(pData?.chessHistoryBot||[]),...(pData?.chessHistoryHuman||[])].sort((a,b)=>b.ts-a.ts).slice(0,4);
+  for(const game of games){
+    const row=document.createElement('li');row.textContent=[game.opponent,game.result,game.ts?new Date(game.ts).toLocaleDateString('fr-FR'):''].filter(Boolean).join(' · ');history.append(row);
+  }
+  if(!games.length){const row=document.createElement('li');row.textContent='Votre première partie classée apparaîtra ici.';history.append(row);}
+}
 function chessStartVsBot(){document.getElementById('chess-time').value=document.getElementById('chess-bot-time').value;startChess('computer');}
 function chessPieceSrc(theme,color,type){return CHESS_PIECE_ASSETS[theme]?.[color+type]||CHESS_PIECE_ASSETS.classic[color+type];}
 function chessPieceElement(color,type,theme=chessPieceTheme){
@@ -2687,7 +2751,7 @@ try{const v=localStorage.getItem('pi_chess_board_theme');if(['green','wood','blu
 function chessClearPending(){chessAiGeneration++;if(chessAiTimeout){clearTimeout(chessAiTimeout);chessAiTimeout=null;}chessSfPending=null;if(chessSfWorker&&chessSfReady){try{chessSfWorker.postMessage("stop");}catch(e){}}}
 function chessPauseClock(){if(chessClockTimer){clearInterval(chessClockTimer);chessClockTimer=null;}}
 function chessExitToHome(){chessClearPending();chessPauseClock();chessStopStockfish();showSc('sc-home');}
-function openChessHub(){chessClearPending();chessPauseClock();chessStopStockfish();chessLoadUserPreferences();chessSetBoardTheme(chessBoardTheme);chessDrawPieceChoices();showSc('sc-chess');}
+function openChessHub(){chessClearPending();chessPauseClock();chessStopStockfish();chessLoadUserPreferences();chessSetBoardTheme(chessBoardTheme);chessDrawPieceChoices();chessDashboard();showSc('sc-chess');}
 function startChess(mode){
   if(typeof Chess==='undefined'){toast('Le module d’échecs ne s’est pas chargé. Vérifiez votre connexion.','err');return;}
   chessClearPending();chessPauseClock();chessStopStockfish();chessMode=mode;chessFlipped=(mode==='puzzle'&&CHESS_PUZZLES[chessPuzzleIndex].fen.split(' ')[1]==='b');chessSelected=null;chessLegal=[];
@@ -3235,7 +3299,7 @@ async function chessLoadLeaderboard(){
  chessEl('chess-rank-bot').classList.toggle('active',chessLeaderboardMode==='bot');
  chessEl('chess-rank-human').classList.toggle('active',chessLeaderboardMode==='human');
  chessEl('chess-rank-heading').textContent=chessLeaderboardMode==='bot'?'Classement Glicko · Bots':'Classement Glicko · Joueurs réels';
- chessEl('chess-rank-help').textContent=chessLeaderboardMode==='bot'?'Notation inspirée de Chess.com (RD). Les bots ont une force indicative ; le moteur de secours n’est pas classé.':'Duel sur le même appareil avec deux comptes. Pas de multijoueur distant. Le classement reflète les performances dans Pi Chess.';
+ chessEl('chess-rank-help').textContent=chessLeaderboardMode==='bot'?'La cote Glicko tient compte de l’incertitude. Seules les parties jouées avec le moteur principal comptent pour ce classement.':'Duel sur le même appareil avec deux comptes. Pas de multijoueur distant. Le classement reflète les performances dans Pi Chess.';
  try{
   const snap=await db.collection('users').get();const all=snap.docs.map(d=>({id:d.id,...d.data()})),kind=chessLeaderboardMode;
   chessUpdateChampion(all);
@@ -3582,17 +3646,13 @@ chessStartGuestDuel=function(){document.getElementById('chess-time').value=docum
 const chessCloseOriginal=closeCurrentScreen;
 closeCurrentScreen=function(){const sc=document.body.dataset.sc;if(sc==='sc-chess-game'){openChessHub();return;}if(sc==='sc-chess-profile'){chessLeaveProfile();return;}if(['sc-chess-rankings','sc-chess-directory','sc-chess-duel'].includes(sc)){openChessHub();return;}return chessCloseOriginal();};
 </script><script>
-/* PI GAMES — éditeur libre, bilan de partie et style Chess.com Neo (option en ligne). */
+/* Éditeur de position, bilan de partie et pièces contrastées. */
 (function(){
  'use strict';
- // Ces styles externes chargent les images officielles depuis le serveur de Chess.com.
- // Aucune image propriétaire n'est recopiée dans le HTML ; le thème intégré Neo sert de secours.
- CHESS_PIECE_THEMES.unshift({id:'chesscom-neo',name:'Chess.com Neo'});
  CHESS_PIECE_THEMES.push({id:'neo-contrast',name:'Neo contrasté'});
  const originalPieceSrc=chessPieceSrc;
  chessPieceSrc=function(theme,color,type){
-  if(theme==='chesscom-neo')return 'https://images.chesscomfiles.com/chess-themes/pieces/neo/150/'+color+type+'.png';
-  if(theme==='neo-contrast')return originalPieceSrc('neo',color,type);
+  if(theme==='neo-contrast'||theme==='chesscom-neo')return originalPieceSrc('neo',color,type);
   return originalPieceSrc(theme,color,type);
  };
  chessPieceElement=function(color,type,theme=chessPieceTheme){

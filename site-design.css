@@ -1,0 +1,362 @@
+/* Pi Games club screens. The auth and chess layouts have their own styles. */
+body {
+  --club-display: "Instrument Serif", "Iowan Old Style", Georgia, serif;
+  --club-ui: "DM Sans", "Segoe UI", Arial, sans-serif;
+  --club-mono: "IBM Plex Mono", Consolas, monospace;
+  --club-button-text: #111a16;
+}
+
+body:is([data-theme="club"], :not([data-theme])) {
+  --bg: #f4f1e8;
+  --surface: #fffcf3;
+  --surface2: #eae9da;
+  --surface3: #dddfcc;
+  --border: #c6ccba;
+  --border2: #9ba992;
+  --accent: #244a38;
+  --accent2: #386348;
+  --text: #17251e;
+  --dim: #4e6054;
+  --dim2: #59685a;
+  --green: #287349;
+  --red: #a73530;
+  --gold: #806218;
+  --bronze: #865836;
+  --silver: #5f6a70;
+  --plat: #38627a;
+  --club-button-text: #f4f8ea;
+  color-scheme: light;
+}
+
+body[data-theme="light"] { --club-button-text: #fff; }
+
+body[data-sc]:not([data-sc^="sc-chess"]):not([data-sc="sc-w"]) {
+  font-family: var(--club-ui);
+  color: var(--text);
+  background: var(--bg);
+  padding-inline: max(clamp(16px, 4vw, 60px), env(safe-area-inset-left, 0px));
+}
+
+body:not([data-sc^="sc-chess"]):not([data-sc="sc-w"]) > .wrap { max-width: 1120px; }
+.sc:not(.chess-screen):not(#sc-w) { min-width: 0; gap: clamp(1rem, 2vw, 1.65rem); }
+.sc:not(.chess-screen):not(#sc-w) .head {
+  align-items: flex-end;
+  gap: 1.1rem;
+  padding-bottom: clamp(1rem, 2.2vw, 1.8rem);
+  border-bottom: 1px solid var(--border2);
+}
+.sc:not(.chess-screen):not(#sc-w) h2 {
+  margin: 0;
+  color: var(--text);
+  font: 500 clamp(2.25rem, 5vw, 4.8rem)/1.02 var(--club-display);
+  letter-spacing: -.045em;
+  text-wrap: balance;
+}
+.sc:not(.chess-screen):not(#sc-w) .who {
+  margin-top: .52rem;
+  color: var(--dim);
+  font-size: clamp(.88rem, 1.3vw, 1rem);
+  line-height: 1.5;
+}
+
+:is(.sc:not(.chess-screen):not(#sc-w), #modal) .btn,
+#sc-account .chess-profile-public-actions button {
+  min-height: 42px;
+  padding: .62rem 1.15rem;
+  border-radius: 8px;
+  font-family: var(--club-ui);
+  font-size: .89rem;
+  font-weight: 650;
+  line-height: 1.25;
+}
+:is(.sc:not(.chess-screen):not(#sc-w), #modal) .btn.bp {
+  color: var(--club-button-text);
+  background: var(--accent);
+}
+:is(.sc:not(.chess-screen):not(#sc-w), #modal) .btn.bp:hover { background: var(--accent2); }
+:is(.sc:not(.chess-screen):not(#sc-w), #modal) .btn.bo,
+#sc-account .chess-profile-public-actions button {
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border2);
+}
+:is(.sc:not(.chess-screen):not(#sc-w), #modal) .btn.bo:hover,
+#sc-account .chess-profile-public-actions button:hover { background: var(--surface2); }
+:is(.sc:not(.chess-screen):not(#sc-w), #modal) .btn.bg { color: var(--dim); }
+.sc:not(.chess-screen):not(#sc-w) :focus-visible,
+#modal :focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+.sc:not(.chess-screen):not(#sc-w) .screen-close {
+  width: 40px; height: 40px;
+  color: var(--text);
+  background: var(--surface);
+  border-radius: 50%;
+}
+
+/* Each game is presented as an individual club poster. */
+#sc-home { align-items: stretch; }
+#sc-home .game-hub-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1rem, 2.4vw, 2rem);
+  margin: 0;
+}
+#sc-home .game-hub-card {
+  isolation: isolate;
+  min-width: 0;
+  min-height: 0;
+  border: 1px solid var(--border);
+  border-radius: 19px;
+  padding: 0 0 1.6rem;
+  overflow: hidden;
+  background: var(--surface);
+  color: var(--text);
+  gap: .55rem;
+  box-shadow: 0 3px 0 color-mix(in srgb, var(--border) 58%, transparent);
+  transition: border-color .18s, box-shadow .18s, transform .18s;
+}
+#sc-home .game-hub-card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 10px 22px color-mix(in srgb, var(--text) 10%, transparent);
+  transform: translateY(-3px);
+}
+#sc-home .game-hub-icon {
+  isolation: isolate;
+  overflow: hidden;
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  height: clamp(174px, 21vw, 254px);
+  margin: 0 0 .8rem;
+  border-radius: 0;
+  border-bottom: 1px solid var(--border);
+  background-color: #d5ed91;
+  background-image: linear-gradient(90deg, #74974330 1px, transparent 1px),
+                    linear-gradient(#74974330 1px, transparent 1px);
+  background-size: 34px 34px;
+  color: #254b38;
+  font: italic 500 clamp(8rem, 16vw, 12.5rem)/1 var(--club-display);
+  text-shadow: 3px 4px 0 #a1c078;
+}
+#sc-home .game-hub-icon::before, #sc-home .game-hub-icon::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  z-index: -1;
+  width: 40%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 1px solid #476d46;
+}
+#sc-home .game-hub-icon::before { left: -18%; bottom: -12%; box-shadow: 0 0 0 18px #d5ed91, 0 0 0 19px #698c56; }
+#sc-home .game-hub-icon::after { right: -16%; top: -18%; box-shadow: 0 0 0 18px #d5ed91, 0 0 0 19px #698c56; }
+#sc-home .chess-hub-icon {
+  color: #ede9cf;
+  background-color: #244735;
+  background-image: repeating-conic-gradient(from 0deg, #1d3c2c 0 25%, transparent 0 50%);
+  background-size: 64px 64px;
+  font: 500 clamp(7rem, 12vw, 10rem)/1 "Segoe UI Symbol", Georgia, serif;
+  text-shadow: 4px 5px 0 #101f18;
+}
+#sc-home .chess-hub-icon::before, #sc-home .chess-hub-icon::after {
+  width: 36%;
+  border-color: #a3bc83;
+  border-radius: 0;
+  box-shadow: none;
+  transform: rotate(45deg);
+}
+#sc-home .game-hub-title, #sc-home .game-hub-desc, #sc-home .game-hub-action {
+  margin-inline: clamp(1.25rem, 2.2vw, 1.9rem);
+}
+#sc-home .game-hub-title { font: 500 clamp(2.1rem, 3.5vw, 3.3rem)/1.06 var(--club-display); letter-spacing: -.045em; }
+#sc-home .game-hub-desc { max-width: 39ch; margin-bottom: .8rem; color: var(--dim); font-size: 1rem; line-height: 1.55; }
+#sc-home .game-hub-action { color: var(--accent); font-size: .9rem; font-weight: 750; }
+#sc-home .game-hub-tag {
+  position: absolute;
+  inset: .9rem .9rem auto auto;
+  margin: 0;
+  padding: .3rem .55rem;
+  color: #ecf4d1;
+  background: #1e352b;
+  border-color: #819877;
+  font: 600 .73rem/1.2 var(--club-ui);
+  letter-spacing: .015em;
+}
+
+/* Profile and game selection */
+#sc-account { width: 100%; max-width: 960px; align-items: stretch; }
+#sc-account .head { padding-right: 3.25rem; }
+#sc-account .account-kicker { color: var(--dim); font: 650 .72rem/1.5 var(--club-mono); letter-spacing: .09em; }
+#sc-account .account-identity {
+  background: var(--accent);
+  color: var(--club-button-text);
+  border: 0;
+  border-radius: 16px;
+  padding: clamp(1.3rem, 3.4vw, 2.5rem);
+}
+#sc-account .account-identity b { font: 500 clamp(1.8rem, 3.3vw, 3rem)/1.1 var(--club-display); }
+#sc-account .account-identity small { font-size: .93rem; color: inherit; opacity: .86; }
+#sc-account .account-global-avatar { background: var(--surface2); color: var(--text); border: 1px solid var(--border2); border-radius: 50%; }
+#sc-account #cloud-backup { align-self: flex-start; }
+#sc-account #cloud-sync-state { margin-top: -.5rem; text-align: left; color: var(--dim); font-size: .88rem; line-height: 1.45; }
+#sc-account .chess-profile-public-actions { justify-content: flex-start; flex-wrap: wrap; }
+#sc-account .account-games-grid { width: 100%; }
+#sc-account .account-games-grid button {
+  padding: clamp(1.2rem, 2.5vw, 2rem);
+  border-color: var(--border);
+  border-radius: 14px;
+}
+#sc-account .account-games-grid b { font: 500 2rem/1.06 var(--club-display); }
+#sc-account .account-games-grid small { font-size: .94rem; }
+#sc-account .account-games-grid strong { font-size: .86rem; }
+
+#sc-m .gtype-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+#sc-m .gtc {
+  min-height: 186px;
+  padding: clamp(1.15rem, 2.4vw, 1.8rem);
+  gap: 1.65rem;
+  justify-content: space-between;
+  border-radius: 14px;
+}
+#sc-m .gtc-tag {
+  width: fit-content;
+  color: var(--accent);
+  background: var(--surface2);
+  padding: .27rem .55rem;
+  border-radius: 5px;
+  font: 600 .73rem/1.4 var(--club-mono);
+  letter-spacing: .04em;
+}
+#sc-m .gtc-name { font: 500 clamp(1.65rem, 3vw, 2.6rem)/1.06 var(--club-display); letter-spacing: -.045em; }
+#sc-m .gtc-desc { margin-top: .45rem; color: var(--dim); font-size: .94rem; line-height: 1.5; }
+#sc-m .gtc.sel { border-color: var(--accent); background: var(--surface2); box-shadow: inset 0 0 0 1px var(--accent); }
+#sc-m #diff-section { padding: 1.25rem; border-block: 1px solid var(--border); }
+#sc-m .dchip { padding: .52rem .9rem; border-radius: 7px; font-family: var(--club-mono); }
+#sc-m .dchip.sel { color: var(--club-button-text); border-color: var(--accent); background: var(--accent); }
+#sc-m #diff-custom { border-radius: 8px; color: var(--text); background: var(--surface); }
+
+/* Pi Master playing surface */
+#sc-g { width: min(100%, 720px); margin-inline: auto; }
+#sc-g .g-top { min-height: 44px; padding-right: 3.25rem; }
+#sc-g .g-score { font: 600 1.03rem/1.4 var(--club-mono); }
+#sc-g .mode-badge { padding: .32rem .55rem; border-radius: 5px; font-size: .73rem; }
+#sc-g .prog-t { height: 5px; background: var(--surface3); }
+#sc-g .calc-display {
+  --accent: #d5ed91;
+  --text: #fffced;
+  --green: #b7ecac;
+  --red: #ffb5a5;
+  min-height: 126px;
+  padding: 1.1rem 1.35rem;
+  border-radius: 16px;
+  color: var(--text);
+  background: #1b382a;
+  border: 1px solid #294c38;
+}
+#sc-g .calc-label { font: italic 500 2rem/1 var(--club-display); }
+#sc-g .calc-line { font-family: var(--club-mono); letter-spacing: -.035em; }
+#sc-g .calc-banner { border: 1px solid #668363; color: #eff4d9; background: #294a35; }
+#sc-g .calc-kbd { padding: clamp(.55rem, 1.5vw, 1rem); border: 1px solid var(--border); border-radius: 16px; background: var(--surface); }
+#sc-g .gk { min-height: clamp(45px, 6vw, 61px); border-radius: 7px; font-family: var(--club-ui); }
+#sc-g .gk-num { border: 1px solid var(--border2); color: var(--text); background: var(--bg); font-size: 1.3rem; font-weight: 650; }
+#sc-g .gk-num:hover, #sc-g .gk-num.pr, #sc-g .gk-num.guide { color: var(--club-button-text); background: var(--accent); }
+#sc-g .gk-num.guide::after { border: 2px solid var(--club-button-text); animation: none; }
+#sc-g .gk-op { color: var(--text); }
+#sc-g .gk-eq { color: var(--club-button-text); background: var(--accent); }
+#sc-g .gk-ac { color: var(--red); }
+#sc-g .learn-ctrl { font-size: .9rem; }
+
+/* Scores and player details */
+#sc-r .r-box, #sc-r .lb-prev { max-width: 530px; }
+#sc-r .r-box {
+  position: relative;
+  padding: 2rem;
+  background: #1f402f;
+  color: #edf3d8;
+  border: 1px solid #364e37;
+  border-radius: 18px;
+}
+#sc-r .r-num { color: #d5ed91; font: 500 clamp(5rem, 11vw, 8rem)/.95 var(--club-display); }
+#sc-r .r-sub, #sc-r .r-comp-note { color: #e2ead7; font-size: .95rem; }
+#sc-r .r-perf { color: #d6eda7; }
+#sc-r .lb-prev h3, #sc-profile .sect-t { color: var(--dim); font: 650 .76rem/1.45 var(--club-mono); letter-spacing: .065em; }
+#sc-lb { max-width: 820px; margin-inline: auto; }
+#sc-lb > h2 { color: var(--text); background: none; padding-inline: 2.75rem; }
+#sc-lb > .sub, #sc-ban .sub { color: var(--dim); font-size: .96rem; line-height: 1.6; }
+#sc-lb .lb-tabs { max-width: 420px; padding: .25rem; border-radius: 11px; }
+#sc-lb .lb-tabs .btn { border-radius: 8px; }
+#sc-lb .lbr, #sc-r .lbm { background: var(--surface); box-shadow: none; border-radius: 10px; }
+#sc-lb .lbr-rk { font-family: var(--club-mono); border-radius: 8px; box-shadow: none; }
+#sc-lb .lbr.rank-1 { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 8%, var(--surface)); }
+#sc-lb .lbr-sc { font: 650 1.3rem var(--club-mono); }
+#sc-lb .lbr-nm { font-size: 1rem; }
+#sc-lb .lbr-label, #sc-lb .lbr-unit, #sc-lb .lbr-dt { font-size: .72rem; }
+#sc-lb .lb-empty { padding: 2rem 1.25rem; border: 1px dashed var(--border2); border-radius: 12px; font-size: .98rem; }
+
+#sc-profile .profile-card {
+  max-width: 720px;
+  padding: clamp(1rem, 3vw, 1.9rem);
+  border-radius: 18px;
+}
+#sc-profile .profile-name { font: 500 2.2rem/1.12 var(--club-display); overflow-wrap: anywhere; }
+#sc-profile .profile-banner { border-radius: 12px; box-shadow: none; }
+#sc-profile .profile-avatar { width: 72px; height: 72px; border: 4px solid var(--surface); box-shadow: 0 2px 10px #17251e20; }
+#sc-profile .profile-stats { border-radius: 9px; }
+#sc-profile .pstat { padding: 1rem .3rem; }
+#sc-profile .pstat-n { font: 600 1.65rem/1.1 var(--club-mono); }
+#sc-profile .pstat-l, #sc-profile .bt-ds, #sc-profile .theme-choice small { font-size: .77rem; }
+#sc-profile .bt { padding: .65rem; border-radius: 8px; }
+#sc-profile .bt-nm { font-size: .88rem; }
+#sc-profile .bt.locked { opacity: .68; }
+#sc-profile .theme-choice { border-radius: 8px; }
+#sc-admin > .head { padding-right: 2.8rem; }
+#sc-admin .admin-panel, #sc-ban .ban-card { border-radius: 14px; padding: 1.2rem; }
+#sc-admin .admin-bar .seg { flex-wrap: wrap; max-width: 100%; }
+#sc-admin .admin-user-row { border-radius: 8px; }
+#sc-admin .admin-bar input { min-width: min(100%, 140px); }
+
+/* Shared modal includes the cloud-backup sign-in form. */
+#modal-bg { background: #121c18a8; backdrop-filter: blur(5px); }
+#modal {
+  max-width: 435px;
+  max-height: calc(100dvh - 2rem);
+  overflow: auto;
+  padding: clamp(1.25rem, 4vw, 2rem);
+  color: var(--text);
+  border-radius: 18px;
+  box-shadow: 0 25px 85px #1226183d;
+  font-family: var(--club-ui);
+}
+#modal h3 { font: 500 2.1rem/1.05 var(--club-display); letter-spacing: -.035em; }
+#modal .mfield { gap: .65rem; }
+#modal .mfield label { font-weight: 650; font-size: .87rem; color: var(--text); }
+#modal .mp { font-size: .94rem; }
+#modal input:is([type="text"], [type="number"], [type="password"], [type="email"]), #modal select {
+  min-height: 44px; width: 100%;
+  padding: .6rem .8rem; border: 1px solid var(--border2);
+  border-radius: 7px; background: var(--bg); color: var(--text); font: inherit;
+}
+#modal input:focus { border-color: var(--accent); }
+#toast { border-radius: 10px; font-size: .94rem; }
+#toast:not(.show) { visibility: hidden; }
+
+@media (max-width: 730px) {
+  #sc-m .gtype-grid { grid-template-columns: 1fr; }
+  #sc-m .gtc { min-height: 97px; flex-direction: row; align-items: center; gap: 1.1rem; justify-content: flex-start; }
+  #sc-m .gtc-tag { flex: 0 0 5.6rem; text-align: center; }
+  #sc-home .game-hub-grid { grid-template-columns: 1fr; }
+  #sc-home .game-hub-icon { height: 185px; }
+  #sc-account .head { padding-right: 2.85rem; }
+}
+@media (max-width: 540px) {
+  .sc:not(.chess-screen):not(#sc-w) .head { align-items: flex-start; }
+  .sc:not(.chess-screen):not(#sc-w) .head .row { justify-content: flex-start; }
+  #sc-g .kbd-row { gap: 4px; grid-template-columns: repeat(7, minmax(0, 1fr)); }
+  #sc-g .gk { min-width: 0; }
+  #sc-account .account-games-grid, #sc-profile .badge-list { grid-template-columns: 1fr; }
+  #sc-admin .admin-bar .seg { flex: 1 1 100%; }
+  #sc-profile .profile-card { padding: .8rem; }
+  #sc-lb > h2 { font-size: 2.05rem; }
+  #sc-home .game-hub-card { border-radius: 14px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #sc-home .game-hub-card:hover, #sc-m .gtc:hover, #sc-lb .lbr:hover { transform: none; }
+}
