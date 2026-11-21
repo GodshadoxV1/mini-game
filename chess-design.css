@@ -530,3 +530,46 @@ body:is([data-sc="sc-chess"],[data-sc="sc-chess-bots"],[data-sc="sc-chess-game"]
 #sc-chess-review .chess-review-card {border-radius:10px;}
 #sc-chess-review .chess-review-left,#sc-chess-review .chess-review-right {min-width:0;}
 @media(max-width:650px){.annotation-tools small{width:100%;}.review-transfer .chess-nav-button{margin:3px 0;}}
+
+/* Knightly-inspired game preparation and board lessons */
+#sc-chess .studio-heading{width:100%;display:flex;justify-content:space-between;align-items:center;gap:14px;margin:2px 0 22px;}
+.studio-heading h1{margin:0;color:#f7f5e8;font:600 clamp(2.4rem,4.2vw,4.2rem)/1 Georgia,serif;letter-spacing:-.055em;}
+.studio-heading h1 span{color:#d4e5ac;}
+.studio-rating{text-align:right;display:grid;gap:2px;}
+.studio-rating b{font:650 1.65rem/1 system-ui;color:#d9edae;}
+.studio-rating small,.studio-fields label,.studio-fields legend{font:600 .79rem/1.35 system-ui;color:#bdcbbf;}
+.studio-layout{display:grid;width:100%;grid-template-columns:minmax(0,min(68svh,650px)) minmax(270px,395px);justify-content:center;align-items:start;gap:clamp(16px,3vw,40px);}
+.studio-side,.studio-fields,.studio-daily{min-width:0;display:grid;gap:12px;}
+.studio-panel,.studio-daily{background:#26382d;color:#edf2e8;border:1px solid #485d4b;border-radius:12px;}
+.studio-panel{overflow:hidden;}
+.studio-tabs{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid #465c49;}
+.studio-tabs button,.studio-link,.studio-daily button,.studio-lesson-nav button{background:transparent;color:#dbe8d6;font:650 .9rem/1.25 system-ui;border:0;cursor:pointer;padding:12px;}
+.studio-tabs button[aria-pressed=true]{color:#e0edbc;box-shadow:inset 0 -3px #c3de86;background:#314638;}
+.studio-fields,.studio-daily{padding:clamp(14px,2vw,24px);}
+.studio-fields [hidden],.studio-fields[hidden]{display:none!important;}
+.studio-fields label,.studio-fields legend{display:block;}
+.studio-fields select{width:100%;font:600 .92rem/1.4 system-ui;background:#1a2a21;color:#f1f3e8;border:1px solid #657868;border-radius:7px;padding:10px;}
+#studio-bot-field label{margin-bottom:8px;}
+#studio-times{border:0;display:flex;flex-wrap:wrap;gap:5px;margin:4px 0;padding:0;min-width:0;}
+#studio-times legend{margin-bottom:8px;}
+#studio-times label{position:relative;cursor:pointer;}
+#studio-times input{position:absolute;opacity:0;}
+#studio-times span{display:block;border:1px solid #617563;border-radius:6px;padding:7px;color:#e0ebdf;font-size:.81rem;}
+#studio-times input:checked+span{color:#202f23;background:#d1e5ab;border-color:#d1e5ab;}
+#studio-times input:focus-visible+span{outline:2px solid #fff;outline-offset:2px;}
+.studio-primary{padding:12px;background:#d2e99b;color:#213526;border:0;border-radius:7px;cursor:pointer;font:750 1rem/1.4 system-ui;}
+.studio-link,.studio-daily button{padding:7px 0;text-align:left;color:#c5dda2;}
+.studio-daily{gap:7px;}
+.studio-daily h2{color:#ccd7c7;font:600 .83rem system-ui;margin:0;}
+.studio-daily strong{font:600 1.42rem/1.2 Georgia,serif;}
+.studio-seat{display:flex;align-items:center;gap:8px;min-height:43px;color:#eef3e8;font:600 .9rem system-ui;}
+.studio-seat small{margin-left:auto;font:650 1.05rem ui-monospace,monospace;font-variant-numeric:tabular-nums;}
+.studio-piece{background:#384f40;color:#eff4e5;display:grid;place-items:center;width:30px;height:30px;border-radius:6px;font-size:20px;}
+.studio-piece.light{background:#e2e8d4;color:#304735;}
+.studio-last{box-shadow:inset 0 0 0 3px #caca51;}
+#studio-note{margin:0;min-height:3.6em;color:#e2ebdc;line-height:1.55;}
+.studio-lesson-nav{display:flex;justify-content:space-between;align-items:center;}
+.studio-lesson-nav button{background:#394e3d;border:1px solid #5b715d;border-radius:6px;min-width:43px;}
+.studio-lesson-nav button:disabled{opacity:.4;cursor:default;}
+@media(max-width:780px){.studio-layout{grid-template-columns:minmax(0,1.1fr) minmax(235px,1fr);gap:12px;}}
+@media(max-width:610px){.studio-layout{grid-template-columns:1fr;}.studio-table{width:min(100%,395px);margin:auto;}.studio-seat{min-height:34px;}.studio-heading h1{font-size:2.5rem;}.studio-rating small{font-size:.71rem;}}

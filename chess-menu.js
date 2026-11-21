@@ -6,6 +6,8 @@
       ['Duel sur cet appareil', chessOpenDuelSetup]
     ]],
     ['Entraînement', '♟', [
+      ['Leçons sur échiquier', async () => { await openChessHub(); chessStudio.learn(); }],
+      ['Puzzle du jour', () => chessStudio.daily()],
       ['Tous les puzzles', () => openPuzzles('all')],
       ['Mats en un coup', () => openPuzzles('mate')],
       ['Échiquier d’analyse', () => startChess('analysis')]

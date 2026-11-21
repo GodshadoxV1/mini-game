@@ -953,16 +953,21 @@ body[data-sc^="sc-chess"] .wrap{max-width:1200px;min-width:0;width:100%;}
     <div class="chess-brand"><span class="chess-brand-icon">♞</span><span class="chess-brand-type"><strong>PI<span>CHESS</span></strong><small>L’ARÈNE DES ÉCHECS</small></span></div>
     <div class="chess-nav"><button type="button" class="chess-nav-button" onclick="chessOpenProfile()">♟ Mon profil Échecs</button><button type="button" class="chess-nav-button" onclick="chessExitToHome()"><span>←</span> Centre de jeux</button></div>
   </header>
-  <h1 class="arena-title">Salle de jeu</h1>
-  <div class="arena-deck">
-    <section class="arena-quick"><h2>Partie rapide</h2><label for="arena-time">Temps par joueur</label>
-      <select id="arena-time"><option value="180">3 minutes</option><option value="300" selected>5 minutes</option><option value="600">10 minutes</option><option value="0">Sans limite</option></select>
-      <button class="arena-primary" onclick="chessQuickStart()">Jouer contre le bot</button>
-      <button onclick="chessOpenDuelSetup()">Duel sur cet appareil</button>
-    </section>
-    <button class="arena-tile" onclick="chessOpenBotPicker()"><span class="arena-diagram" data-position="start" aria-hidden="true"></span><strong>Adversaires du club</strong><small>Choisir un robot ↗</small></button>
-    <button class="arena-tile" onclick="chessOpenPuzzleHub()"><span class="arena-diagram" data-position="tactics" aria-hidden="true"></span><strong>Puzzles tactiques</strong><small>Ouvrir les défis ↗</small></button>
-    <button class="arena-tile" onclick="startChess('analysis')"><span class="arena-diagram" data-position="opening" aria-hidden="true"></span><strong>Échiquier libre</strong><small>Analyser une position ↗</small></button>
+  <div class="studio-heading"><h1>À vous de jouer<span>.</span></h1><div class="studio-rating"><b id="studio-rating">—</b><small>Elo contre les robots</small></div></div>
+  <div class="studio-layout">
+    <section class="studio-table" aria-label="Aperçu de l’échiquier"><div class="studio-seat"><span class="studio-piece">♚</span><strong id="studio-black">Noirs</strong><small id="studio-black-clock"></small></div>
+      <div id="studio-board" class="arena-diagram arena-large" data-position="start" role="img" aria-label="Position initiale"></div>
+      <div class="studio-seat"><span class="studio-piece light">♔</span><strong id="studio-white">Blancs</strong><small id="studio-white-clock"></small></div></section>
+    <div class="studio-side"><section class="studio-panel" aria-label="Préparer une partie ou étudier">
+      <div class="studio-tabs"><button type="button" aria-pressed="true" id="studio-play-tab" aria-controls="studio-play">Nouvelle partie</button><button type="button" aria-pressed="false" id="studio-learn-tab" aria-controls="studio-learn">Apprendre</button></div>
+      <div id="studio-play" class="studio-fields"><label for="studio-mode">Mode de jeu</label><select id="studio-mode"><option value="computer">Contre un robot</option><option value="local">Duel sur cet appareil</option></select>
+      <div id="studio-bot-field"><label for="studio-bot">Adversaire</label><select id="studio-bot"></select></div>
+      <fieldset id="studio-times"><legend>Temps par joueur</legend></fieldset>
+      <button type="button" id="studio-start" class="studio-primary">Jouer</button><button type="button" class="studio-link" id="studio-options">Tous les robots et leurs réglages ↗</button></div>
+      <div id="studio-learn" class="studio-fields" hidden><label for="studio-lesson">Leçon</label><select id="studio-lesson"></select><p id="studio-note" aria-live="polite"></p>
+        <div class="studio-lesson-nav"><button type="button" id="studio-prev" aria-label="Étape précédente">←</button><strong id="studio-step"></strong><button type="button" id="studio-next" aria-label="Étape suivante">→</button></div></div>
+    </section><section class="studio-daily"><h2>Puzzle du jour</h2><strong id="studio-puzzle-title"></strong><button type="button" id="studio-puzzle">Résoudre le puzzle →</button></section>
+    <button class="studio-link" type="button" onclick="startChess('analysis')">Ouvrir l’échiquier libre ↗</button></div>
   </div>
   <section class="arena-recent"><h2>Dernières parties classées</h2><ul id="arena-history"></ul></section>
  <section class="chess-community-links" aria-label="Compétition et joueurs">
@@ -2663,7 +2668,7 @@ const CHESS_ENGINE_BASE='https://cdn.jsdelivr.net/npm/stockfish@19.0.1/bin/';
 try{const b=localStorage.getItem('pi_chess_bot');if(CHESS_BOTS.some(x=>x.id===b))chessSelectedBotId=b;const e=Number(localStorage.getItem('pi_chess_elo'));if(e>=1320&&e<=3500)chessCustomElo=e;const p=localStorage.getItem('pi_chess_piece_theme');if(CHESS_PIECE_THEMES.some(x=>x.id===p))chessPieceTheme=p;}catch(e){}
 function chessActiveBot(){return CHESS_BOTS.find(b=>b.id===chessSelectedBotId)||CHESS_BOTS[1];}
 function chessBotRating(bot=chessActiveBot()){return bot.custom?chessCustomElo:bot.elo;}
-function chessOpenBotPicker(){chessLoadUserPreferences();chessClearPending();chessPauseClock();chessStopStockfish();chessDrawBotPicker();chessDiagram(document.querySelector('.arena-large'));showSc('sc-chess-bots');}
+function chessOpenBotPicker(){chessLoadUserPreferences();chessClearPending();chessPauseClock();chessStopStockfish();chessDrawBotPicker();chessDiagram(document.querySelector('#sc-chess-bots .arena-large'));showSc('sc-chess-bots');}
 function chessDrawBotPicker(){
  const list=document.getElementById('chess-bot-gallery');if(!list)return;
  list.innerHTML='';for(const bot of CHESS_BOTS){
@@ -2677,12 +2682,8 @@ function chessDrawBotPicker(){
 
  document.getElementById('chess-engine-note').textContent=bot.custom?'Stockfish 19 · force réglable. Le moteur complet est proposé à partir de 3 400.':'Stockfish 19 Lite · '+(bot.elo<1320?'profondeur et niveau adaptés aux débutants. Elo indicatif.':'force limitée selon le niveau du robot.');
 }
-function chessSelectBot(id){if(!CHESS_BOTS.some(b=>b.id===id))return;chessSelectedBotId=id;try{localStorage.setItem('pi_chess_bot',id);}catch(e){}if(pUserId&&db)db.doc('users/'+pUserId).update({chessSelectedBotId:id}).catch(()=>{});chessDrawBotPicker();}
+function chessSelectBot(id){if(!CHESS_BOTS.some(b=>b.id===id))return;chessSelectedBotId=id;if(pData)pData.chessSelectedBotId=id;try{localStorage.setItem('pi_chess_bot',id);}catch(e){}if(pUserId&&db)db.doc('users/'+pUserId).update({chessSelectedBotId:id}).catch(()=>{});chessDrawBotPicker();}
 function chessSetCustomElo(v){chessCustomElo=Math.max(1320,Math.min(3500,Math.round(Number(v)/10)*10||1600));document.getElementById('chess-elo-slider').value=chessCustomElo;document.getElementById('chess-elo-value').textContent=chessCustomElo.toLocaleString('fr-FR')+(chessCustomElo>3190?' · MAX*':' Elo');document.getElementById('chess-preview-rating').textContent=chessCustomElo.toLocaleString('fr-FR');try{localStorage.setItem('pi_chess_elo',chessCustomElo);}catch(e){}if(pUserId&&db)db.doc('users/'+pUserId).update({chessCustomElo}).catch(()=>{});}
-function chessQuickStart(){
-  document.getElementById('chess-bot-time').value=document.getElementById('arena-time').value;
-  chessStartVsBot();
-}
 function chessDiagram(board){
   const layouts={
     start:'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR',
@@ -2691,7 +2692,7 @@ function chessDiagram(board){
   };
   board.dataset.theme=chessBoardTheme;
   const squares=document.createDocumentFragment();
-  layouts[board.dataset.position].split('/').forEach((row,r)=>{
+  (board.dataset.placement||layouts[board.dataset.position]).split('/').forEach((row,r)=>{
     const cells=row.replace(/[1-8]/g,n=>'.'.repeat(Number(n)));
     Array.from(cells).forEach((piece,c)=>{
       const cell=document.createElement('span');
@@ -2710,7 +2711,7 @@ function chessDiagram(board){
   board.replaceChildren(squares);
 }
 function chessDashboard(){
-  document.querySelectorAll('#sc-chess .arena-diagram').forEach(chessDiagram);
+  chessStudio.refresh();
   const history=document.getElementById('arena-history');history.replaceChildren();
   const games=[...(pData?.chessHistoryBot||[]),...(pData?.chessHistoryHuman||[])].sort((a,b)=>b.ts-a.ts).slice(0,4);
   for(const game of games){
@@ -2739,6 +2740,7 @@ function chessSetPieceTheme(v){
  try{localStorage.setItem('pi_chess_piece_theme_'+(pUserId||'guest'),v);}catch(e){}
  if(pUserId&&db){pData.chessPieceTheme=v;db.doc('users/'+pUserId).update({chessPieceTheme:v}).catch(()=>{});}
  chessDrawPieceChoices();
+ if(document.body.dataset.sc==='sc-chess')chessStudio.draw();
  if(chessGame&&document.body.dataset.sc==='sc-chess-game')chessRender();
 }
 
@@ -2790,7 +2792,8 @@ function chessSetBoardTheme(v){
   const board=document.getElementById('chess-board');if(board)board.dataset.boardTheme=v;
   document.querySelectorAll('.chess-theme-choice').forEach(b=>{const active=b.dataset.chessTheme===v;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active));});
   try{localStorage.setItem('pi_chess_board_theme_'+(pUserId||'guest'),v);}catch(e){}
-  if(pUserId&&db){pData.chessBoardTheme=v;db.doc('users/'+pUserId).update({chessBoardTheme:v}).catch(()=>{});}
+  if(document.body.dataset.sc==='sc-chess')chessStudio.draw();
+ if(pUserId&&db){pData.chessBoardTheme=v;db.doc('users/'+pUserId).update({chessBoardTheme:v}).catch(()=>{});}
 }
 function chessUpdateMatchConfig(){
  const cadence=chessClock.base?chessClock.base>=60?Math.round(chessClock.base/60)+' min':chessClock.base+' s':'Sans limite';
@@ -3991,6 +3994,7 @@ closeCurrentScreen=function(){const sc=document.body.dataset.sc;if(sc==='sc-ches
 
 </script>
 <script src="./chess-annotations.js"></script>
+<script src="./chess-studio.js"></script>
 <script src="./chess-menu.js"></script>
 <script type="module" src="./cloud-backup.mjs"></script>
 </body></html>
