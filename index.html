@@ -1106,15 +1106,16 @@ body[data-sc^="sc-chess"] .wrap{max-width:1200px;min-width:0;width:100%;}
 <!-- PI CHESS • BILAN DE PARTIE -->
 <div id="sc-chess-review" class="sc chess-screen chess-review-screen">
  <header class="chess-appbar"><div class="chess-brand"><span class="chess-brand-icon">♛</span><span class="chess-brand-type"><strong>PI<span>REVIEW</span></strong><small>ANALYSE DE PARTIE</small></span></div><div class="chess-nav"><button type="button" class="chess-nav-button" onclick="chessReviewBack()">← Retour à l’échiquier</button><button type="button" class="chess-nav-button chess-nav-subtle" onclick="openChessHub()">Modes</button></div></header>
- <section class="chess-review-hero"><div><span class="chess-eyebrow">♟ VOTRE BILAN</span><h2>Chaque coup raconte une histoire.</h2><p id="chess-review-subtitle">Revivez la partie, repérez vos meilleurs coups et découvrez les occasions manquées.</p></div><span class="chess-review-tag" id="chess-review-method">Estimation rapide</span></section>
+ <section class="chess-review-hero"><div><span class="chess-eyebrow">♟ VOTRE BILAN</span><h2>Bilan de partie</h2><p id="chess-review-subtitle">Revivez la partie, repérez vos meilleurs coups et découvrez les occasions manquées.</p></div><span class="chess-review-tag" id="chess-review-method">Estimation rapide</span></section>
  <section class="chess-review-stats" aria-label="Synthèse de la partie"><div class="chess-review-stat"><small>Précision estimée · Blancs</small><strong id="chess-review-acc-w">—</strong><span id="chess-review-count-w">0 coups</span></div><div class="chess-review-stat"><small>Précision estimée · Noirs</small><strong id="chess-review-acc-b">—</strong><span id="chess-review-count-b">0 coups</span></div><div class="chess-review-stat"><small>Erreurs et gaffes</small><strong id="chess-review-errors">—</strong><span>Deux camps réunis</span></div><div class="chess-review-stat"><small>Coups analysés</small><strong id="chess-review-total">—</strong><span id="chess-review-progress-text">Analyse locale</span></div></section>
  <div class="chess-review-grid"><div class="chess-review-left">
-  <div id="chess-review-board" class="chess-review-board" role="img" aria-label="Position de la partie sélectionnée"></div>
-  <div class="chess-review-nav"><button type="button" onclick="chessReviewGo(0)" aria-label="Début de partie">⏮</button><button type="button" onclick="chessReviewGo(chessReviewCursor-1)" aria-label="Coup précédent">◀</button><button type="button" onclick="chessReviewGo(chessReviewCursor+1)" aria-label="Coup suivant">▶</button><button type="button" onclick="chessReviewGo(chessReviewData.moves.length)" aria-label="Fin de partie">⏭</button></div>
+  <div class="annotation-frame"><div id="chess-review-board" class="chess-review-board" role="img" aria-label="Position de la partie sélectionnée"></div></div>
+  <div class="chess-review-nav"><button type="button" onclick="chessReviewGo(0)" aria-label="Début de partie">⏮</button><button type="button" onclick="chessReviewStep(-1)" aria-label="Coup précédent">◀</button><button type="button" onclick="chessReviewStep(1)" aria-label="Coup suivant">▶</button><button type="button" onclick="chessReviewGo(Infinity)" aria-label="Fin de partie">⏭</button></div>
   <div class="chess-review-card"><h3>Évolution de la position</h3><div id="chess-review-graph" class="chess-review-graph" aria-label="Évaluations des positions"></div><div class="chess-review-graph-legend"><span>▲ Avantage blanc</span><span>▼ Avantage noir</span></div></div>
   <div class="chess-review-card chess-review-feedback"><h3>Analyse du coup</h3><div id="chess-review-explanation"><p>Choisissez un coup pour obtenir son évaluation.</p></div></div>
  </div><aside class="chess-review-right">
-  <section class="chess-review-card"><h3>♞ Analyse Stockfish</h3><p id="chess-review-engine-text">Une estimation locale est disponible immédiatement. Lancez Stockfish pour une analyse plus approfondie, si le moteur se charge.</p><button class="chess-review-run" type="button" id="chess-review-run" onclick="chessReviewRunEngine()">⚡ Analyser avec Stockfish</button><div id="chess-review-engine-progress" class="chess-review-engine-progress" hidden><div class="chess-review-progress"><span id="chess-review-progress-fill"></span></div><small id="chess-review-engine-state" class="chess-review-status">Préparation…</small></div><p class="chess-review-footnote">Classement des coups et précision approximatifs, différents des calculs propriétaires de Chess.com. Le moteur dépend du chargement de Stockfish.</p></section>
+  <section class="chess-review-card"><h3>♞ Analyse Stockfish</h3><p id="chess-review-engine-text">Une estimation locale est disponible immédiatement. Lancez Stockfish pour une analyse plus approfondie, si le moteur se charge.</p><button class="chess-review-run" type="button" id="chess-review-run" onclick="chessReviewRunEngine()">⚡ Analyser avec Stockfish</button><div id="chess-review-engine-progress" class="chess-review-engine-progress" hidden><div class="chess-review-progress"><span id="chess-review-progress-fill"></span></div><small id="chess-review-engine-state" class="chess-review-status">Préparation…</small></div><p class="chess-review-footnote">Classement des coups et précision approximatifs, différents des calculs propriétaires de Chess.com. </p></section>
+  <section class="chess-review-card review-transfer"><h3>Revoir sur Chess.com</h3><p>Copiez la partie, ouvrez l’analyse Chess.com et collez le PGN dans le champ d’import.</p><details><summary>Afficher le PGN</summary><textarea id="review-pgn" aria-label="Partie au format PGN" readonly></textarea></details><div><button type="button" class="chess-nav-button" onclick="chessCopyPGN()">Copier le PGN</button> <a class="chess-nav-button" href="https://www.chess.com/analysis/games" target="_blank" rel="noopener noreferrer">Ouvrir Chess.com ↗</a></div></section>
   <section class="chess-review-card"><h3>Historique annoté</h3><div id="chess-review-moves" class="chess-review-list"><p>Jouez quelques coups pour voir le bilan.</p></div></section>
  </aside></div>
 </div>
@@ -1611,7 +1612,7 @@ async function handleAuth(){
       const salt = newSalt();
       const pwHash = await hashPw(pw, salt);
       const ref = db.collection('users').doc();
-      const data = { name, nameLower:name.toLowerCase(), salt, pwHash, games:0, best:0, totalPi:0, badges:[], theme:'club', perfectGames:0, createdAt:Date.now() };
+      const data = { name, nameLower:name.toLowerCase(), salt, pwHash, games:0, best:0, totalPi:0, badges:[], theme:'club', chessEloBot:100, chessBestEloBot:100, chessEloHuman:100, chessBestEloHuman:100, perfectGames:0, createdAt:Date.now() };
       await ref.set(data);
       startSession(ref.id, data);
     } else {
@@ -3031,10 +3032,22 @@ function chessStockfishMessage(line){
   if(chessMode==='computer'&&chessGame?.turn()==='b'&&!chessFinished)chessAskStockfish();
   return;
  }
+ if(chessSfPending?.alternatives && line.startsWith('info depth ')){
+  const entry=line.match(/\bdepth (\d+).*?\bmultipv (\d+).*?\bscore cp (-?\d+).*?\bpv ([a-h][1-8][a-h][1-8][qrbn]?)(?: |$)/);
+  if(entry)chessSfPending.alternatives.set(Number(entry[2]),{depth:Number(entry[1]),score:Number(entry[3]),move:entry[4]});
+ }
  if(line.startsWith('bestmove ')){
   const pending=chessSfPending;chessSfPending=null;
   if(!pending||!chessGame||chessFinished||chessMode!=='computer'||chessGame.turn()!=='b'||chessGame.fen()!==pending.fen||pending.generation!==chessAiGeneration||document.body.dataset.sc!=='sc-chess-game')return;
-  const uci=line.split(' ')[1]||'';
+  let uci=line.split(' ')[1]||'';
+  if(pending.alternatives){
+   const lines=[...pending.alternatives.values()],top=pending.alternatives.get(1);
+   const softness=Math.max(0,Math.min(1,(1320-chessBotRating())/1000));
+   if(top && Math.random()<softness*.8){
+    const choices=lines.filter(v=>v.depth===top.depth && v.move!==uci && top.score-v.score<=40+softness*360);
+    if(choices.length)uci=choices[Math.floor(Math.random()*choices.length)].move;
+   }
+  }
   if(!/^[a-h][1-8][a-h][1-8][qrbn]?$/.test(uci)){chessStockfishFail();return;}
   const move=chessGame.move({from:uci.slice(0,2),to:uci.slice(2,4),promotion:uci[4]||'q'});
   if(!move){chessStockfishFail();return;}
@@ -3044,15 +3057,16 @@ function chessStockfishMessage(line){
 function chessAskStockfish(){
  if(!chessSfWorker||!chessSfReady||chessSfPending||!chessGame||chessGame.turn()!=='b'||chessFinished)return;
  const elo=chessBotRating(),beginner=elo<chessSfLimits.min,limited=!beginner&&elo<=chessSfLimits.max;
- chessSfPending={fen:chessGame.fen(),generation:chessAiGeneration};
+ chessSfPending={fen:chessGame.fen(),generation:chessAiGeneration,alternatives:beginner?new Map():null};
  try{
   chessSfWorker.postMessage('setoption name UCI_LimitStrength value '+(limited?'true':'false'));
   if(limited)chessSfWorker.postMessage('setoption name UCI_Elo value '+Math.min(chessSfLimits.max,Math.max(chessSfLimits.min,elo)));
   else chessSfWorker.postMessage('setoption name Skill Level value '+(beginner?Math.max(0,Math.floor((elo-350)/125)):20));
+  chessSfWorker.postMessage('setoption name MultiPV value '+(beginner?5:1));
   chessSfWorker.postMessage('position fen '+chessSfPending.fen);
   // For 3200–3500 the UCI strength limit is disabled; stronger levels search longer.
   const time=elo>3190?Math.round(1700+((elo-3190)/310)**1.6*10500):elo>=2600?1800:elo>=2100?1200:elo>=1700?850:550;
-  chessSfWorker.postMessage(beginner?'go depth '+Math.max(1,Math.round((elo-100)/250)):'go movetime '+time);
+  chessSfWorker.postMessage(beginner?'go depth '+Math.max(3,Math.round(2+elo/240)):'go movetime '+time);
  }catch(e){chessStockfishFail();}
 }
 function chessComputerMove(){
@@ -3844,10 +3858,10 @@ closeCurrentScreen=function(){const sc=document.body.dataset.sc;if(sc==='sc-ches
   if(!reviewData)return;const d=reviewData,n=reviewCursor;
   const game=new Chess();if(!game.load(d.positions[n]))return;
   const el=document.getElementById('chess-review-board');el.replaceChildren();el.dataset.boardTheme=chessBoardTheme;
-  const rows=game.board(),last=n?d.moves[n-1]:null;
+  el.dataset.position=d.positions[n];const rows=game.board(),last=n?d.moves[n-1]:null;
   for(let r=0;r<8;r++)for(let c=0;c<8;c++){
    const sq='abcdefgh'[c]+(8-r),p=rows[r][c],cell=document.createElement('div');
-   cell.className='chess-square '+((r+c)%2?'dark':'light')+(last&&(last.from===sq||last.to===sq)?' review-last':'');
+   cell.dataset.square=sq;cell.className='chess-square '+((r+c)%2?'dark':'light')+(last&&(last.from===sq||last.to===sq)?' review-last':'');
    if(p)cell.appendChild(chessPieceElement(p.color,p.type));
    if(c===0){const label=document.createElement('span');label.className='coord';label.textContent=8-r;cell.appendChild(label);}
    if(r===7){const label=document.createElement('span');label.className='coord';label.style.left='auto';label.style.right='3px';label.style.top='auto';label.style.bottom='2px';label.textContent='abcdefgh'[c];cell.appendChild(label);}
@@ -3895,18 +3909,19 @@ closeCurrentScreen=function(){const sc=document.body.dataset.sc;if(sc==='sc-ches
   const evaluation=document.createElement('p');evaluation.style.marginTop='7px';evaluation.textContent='Évaluation : '+chessReviewEvaluationText(d.evals[i+1])+' (point de vue des blancs).';el.appendChild(evaluation);
  }
  function chessReviewRender(){if(!reviewData)return;chessReviewClassify();chessReviewSummaries();chessReviewRenderBoard();chessReviewRenderList();chessReviewRenderGraph();chessReviewRenderExplanation();}
+ window.chessReviewStep=delta=>chessReviewGo(reviewCursor+delta);
  window.chessReviewGo=function(index){if(!reviewData)return;reviewCursor=Math.max(0,Math.min(reviewData.moves.length,index));chessReviewRenderBoard();chessReviewRenderExplanation();chessReviewRenderGraph();chessReviewRenderList();};
  window.chessOpenReview=function(){
   if(!chessGame||!chessGame.history().length||editorActive){toast('Jouez quelques coups pour obtenir un bilan.','err');return;}
   if(!chessFinished&&!chessGame.game_over()&&chessMode!=='analysis'){toast('Le bilan sera disponible à la fin de cette partie.','err');return;}
   chessPauseClock();chessClearPending();chessReviewCancel();
   try{reviewData=chessReviewBuildData();}catch(e){console.warn('Bilan impossible',e);toast('Impossible de reconstruire la partie.','err');return;}
-  reviewCursor=reviewData.moves.length;reviewActive=true;
+  reviewCursor=reviewData.moves.length;reviewActive=true;document.getElementById('review-pgn').value=chessGame.pgn();
   document.getElementById('chess-review-run').disabled=false;
   document.getElementById('chess-review-engine-progress').hidden=true;
   document.getElementById('chess-review-engine-text').textContent='Première estimation disponible. Lancez Stockfish pour analyser plus précisément chaque position et chaque coup.';
   document.getElementById('chess-review-subtitle').textContent=reviewData.moves.length+' demi-coups · '+(chessMode==='analysis'?'Échiquier libre':'Partie terminée')+' · sélectionnez un coup pour le revoir.';
-  showSc('sc-chess-review');chessReviewRender();
+  showSc('sc-chess-review');chessReviewRender();chessReviewRunEngine();
  };
  window.chessReviewBack=function(){chessReviewCancel();reviewActive=false;showSc('sc-chess-game');chessRender();};
  function chessReviewCancel(){reviewSeq++;reviewBusy=false;
@@ -3975,6 +3990,7 @@ closeCurrentScreen=function(){const sc=document.body.dataset.sc;if(sc==='sc-ches
 })();
 
 </script>
+<script src="./chess-annotations.js"></script>
 <script src="./chess-menu.js"></script>
 <script type="module" src="./cloud-backup.mjs"></script>
 </body></html>

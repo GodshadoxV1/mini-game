@@ -507,3 +507,26 @@ body:is([data-sc="sc-chess"],[data-sc="sc-chess-bots"],[data-sc="sc-chess-game"]
   .club-menu details:nth-of-type(even) .club-submenu {left:auto;right:0;}
   .club-menu details:nth-of-type(odd) .club-submenu {left:0;right:auto;}
 }
+
+/* Annotation controls and playing surface */
+.annotation-frame {position:relative;}
+.board-marks {position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:4;}
+.marked-cell {fill:#dc3844;fill-opacity:.52;}
+.marked-arrow {fill:#e89024;fill-opacity:.9;stroke:#713a0b;stroke-width:.025;}
+.annotating,.annotating * {touch-action:none!important;cursor:crosshair!important;}
+.annotation-tools {display:flex;align-items:center;flex-wrap:wrap;gap:7px;margin:6px 0;color:var(--muted-ink);}
+.annotation-tools button,.review-transfer .chess-nav-button {border:1px solid #617563;border-radius:6px;background:#283c30;color:#f5f4e9;padding:7px 10px;font:600 .8rem/1.3 system-ui;cursor:pointer;}
+.annotation-tools button[aria-pressed=true] {background:#d7e8a7;color:#213223;}
+.annotation-tools button:disabled {opacity:.55;}
+.annotation-tools small {font-size:.72rem;}
+.review-transfer details {margin:10px 0;color:var(--ink);}
+.review-transfer textarea {display:block;width:100%;min-height:80px;margin-block:8px;resize:vertical;}
+.review-transfer a {display:inline-flex;text-decoration:none;}
+#sc-chess-bots .chess-bot-meta .chess-bot-elo {display:block;color:#cedbbc;font:500 .68rem system-ui;}
+#sc-chess-bots .chess-bot-meta small {display:none;}
+#sc-chess-game .chess-match-heading h2 {font:650 clamp(1.25rem,2.4vw,2rem)/1.15 system-ui;letter-spacing:-.03em;}
+#sc-chess-review .chess-review-hero {background:#20372a;padding:20px;border-radius:10px;}
+#sc-chess-review .chess-review-hero h2 {font:650 clamp(1.6rem,3vw,2.5rem)/1.1 system-ui;}
+#sc-chess-review .chess-review-card {border-radius:10px;}
+#sc-chess-review .chess-review-left,#sc-chess-review .chess-review-right {min-width:0;}
+@media(max-width:650px){.annotation-tools small{width:100%;}.review-transfer .chess-nav-button{margin:3px 0;}}
