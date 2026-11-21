@@ -841,12 +841,14 @@ body[data-sc^="sc-chess"] .wrap{max-width:1200px;min-width:0;width:100%;}
 
 <link rel="stylesheet" href="./site-design.css">
 <link rel="stylesheet" href="./chess-design.css">
+<link rel="stylesheet" href="./knightly.css">
 <link rel="stylesheet" href="./welcome.css">
 </head><body>
 <div id="loading"><div class="spin"></div><span style="color:var(--dim);font-size:.82rem">Chargement…</span></div>
 <div id="toast"></div>
 <button id="admin-fab" type="button" style="display:none" onclick="promptAdmin()"><i></i>Administration</button>
 
+<header id="knight-top"><div class="knight-bar"><button type="button" class="knight-brand" data-knight="play" aria-label="Knightly, salle de jeu"><span aria-hidden="true">♞</span>knightly</button><nav aria-label="Menus du jeu d’échecs"><button type="button" data-knight="play">Jouer</button><button type="button" data-knight="puzzles">Puzzles</button><button type="button" data-knight="learn">Apprendre</button><button type="button" data-knight="watch">Regarder</button><button type="button" data-knight="rank">Classement</button></nav><div class="knight-account"><button type="button" data-knight="home">← Pi Games</button><button type="button" data-knight="profile" id="knight-account">Mon profil</button></div></div></header>
 <div class="wrap">
 
 <!-- CONNEXION -->
@@ -944,23 +946,19 @@ body[data-sc^="sc-chess"] .wrap{max-width:1200px;min-width:0;width:100%;}
 
 <!-- HUB ÉCHECS · nouvelle expérience -->
 <div id="sc-chess" class="sc chess-screen chess-lobby">
-<nav class="arena-rail" aria-label="Navigation du club">
-  <button class="arena-mark" onclick="openChessHub()"><i>π</i> Pi Chess</button>
-  <button onclick="openChessHub()">Salle de jeu</button><button onclick="chessOpenBotPicker()">Robots</button><button onclick="chessOpenPuzzleHub()">Puzzles</button>
-  <button onclick="chessOpenRankings('bot')">Classements</button><button onclick="chessExitToHome()">← Pi Games</button>
-</nav>
+
   <header class="chess-appbar">
     <div class="chess-brand"><span class="chess-brand-icon">♞</span><span class="chess-brand-type"><strong>PI<span>CHESS</span></strong><small>L’ARÈNE DES ÉCHECS</small></span></div>
     <div class="chess-nav"><button type="button" class="chess-nav-button" onclick="chessOpenProfile()">♟ Mon profil Échecs</button><button type="button" class="chess-nav-button" onclick="chessExitToHome()"><span>←</span> Centre de jeux</button></div>
   </header>
-  <div class="studio-heading"><h1>À vous de jouer<span>.</span></h1><div class="studio-rating"><b id="studio-rating">—</b><small>Elo contre les robots</small></div></div>
+  <div class="studio-heading"><div><h1 id="studio-title">À vous de jouer.</h1><p id="studio-intro">Choisissez votre adversaire et votre cadence.</p></div><div class="studio-rating"><b id="studio-rating">—</b><small>Elo contre les robots</small></div></div>
   <div class="studio-layout">
     <section class="studio-table" aria-label="Aperçu de l’échiquier"><div class="studio-seat"><span class="studio-piece">♚</span><strong id="studio-black">Noirs</strong><small id="studio-black-clock"></small></div>
       <div id="studio-board" class="arena-diagram arena-large" data-position="start" role="img" aria-label="Position initiale"></div>
       <div class="studio-seat"><span class="studio-piece light">♔</span><strong id="studio-white">Blancs</strong><small id="studio-white-clock"></small></div></section>
     <div class="studio-side"><section class="studio-panel" aria-label="Préparer une partie ou étudier">
-      <div class="studio-tabs"><button type="button" aria-pressed="true" id="studio-play-tab" aria-controls="studio-play">Nouvelle partie</button><button type="button" aria-pressed="false" id="studio-learn-tab" aria-controls="studio-learn">Apprendre</button></div>
-      <div id="studio-play" class="studio-fields"><label for="studio-mode">Mode de jeu</label><select id="studio-mode"><option value="computer">Contre un robot</option><option value="local">Duel sur cet appareil</option></select>
+      <div class="studio-tabs"><button type="button" aria-pressed="true" id="studio-play-tab" aria-controls="studio-play">Nouvelle partie</button><button type="button" id="studio-analysis-tab">Analyse</button></div>
+      <div id="studio-play" class="studio-fields"><div class="knight-modes" role="group" aria-label="Mode de jeu"><button type="button" data-mode-choice="computer" aria-pressed="true"><span>♞</span><b>Contre un robot</b><small>Stockfish</small></button><button type="button" data-mode-choice="local" aria-pressed="false"><span>♟♙</span><b>Avec un ami</b><small>Sur cet appareil</small></button></div><select id="studio-mode" hidden aria-label="Mode de jeu"><option value="computer">Contre un robot</option><option value="local">Duel sur cet appareil</option></select>
       <div id="studio-bot-field"><label for="studio-bot">Adversaire</label><select id="studio-bot"></select></div>
       <fieldset id="studio-times"><legend>Temps par joueur</legend></fieldset>
       <button type="button" id="studio-start" class="studio-primary">Jouer</button><button type="button" class="studio-link" id="studio-options">Tous les robots et leurs réglages ↗</button></div>
@@ -986,6 +984,8 @@ body[data-sc^="sc-chess"] .wrap{max-width:1200px;min-width:0;width:100%;}
 </div>
 
 
+<section id="sc-chess-learn" class="sc chess-screen"><div class="knight-heading"><h1>Chaque coup vous fait progresser.</h1><p>Choisissez une leçon à suivre sur l’échiquier.</p></div><div class="knight-lessons"><button type="button" data-lesson="0"><span>01</span><div><strong>Les règles</strong><small>Protéger la dame et mater avec le roi.</small></div><b aria-hidden="true">→</b></button><button type="button" data-lesson="1"><span>02</span><div><strong>Les ouvertures</strong><small>Développer ses pièces dans la partie italienne.</small></div><b aria-hidden="true">→</b></button><button type="button" data-lesson="2"><span>03</span><div><strong>Les tactiques</strong><small>Attaquer deux pièces avec une fourchette.</small></div><b aria-hidden="true">→</b></button><button type="button" data-lesson="3"><span>04</span><div><strong>Les finales</strong><small>Accompagner un pion jusqu’à la promotion.</small></div><b aria-hidden="true">→</b></button></div></section>
+<section id="sc-chess-watch" class="sc chess-screen"><div class="knight-heading"><h1>Le jeu sous un autre angle.</h1><p>Rejouez une partie ou explorez une position à votre rythme.</p></div><div class="knight-grid"><button type="button" class="knight-card" data-knight="replay"><span class="knight-icon" aria-hidden="true">♛</span><strong>Partie commentée</strong><small>Le mat du berger en quatre coups. Rejouez la partie et consultez le bilan.</small><span class="knight-arrow" aria-hidden="true">↗</span></button><button type="button" class="knight-card" data-lesson="1"><span class="knight-icon" aria-hidden="true">♝</span><strong>Explorer les ouvertures</strong><small>Suivez chaque coup de la partie italienne sur l’échiquier.</small><span class="knight-arrow" aria-hidden="true">↗</span></button><button type="button" class="knight-card" data-knight="analysis"><span class="knight-icon" aria-hidden="true">▦</span><strong>Échiquier d’analyse</strong><small>Essayez une variante ou composez votre propre position.</small><span class="knight-arrow" aria-hidden="true">↗</span></button></div></section>
 <!-- PI CHESS • CLASSIFICATION ET COMMUNAUTÉ -->
 <div id="sc-chess-rankings" class="sc chess-screen">
  <header class="chess-appbar"><div class="chess-brand"><span class="chess-brand-icon">♞</span><span class="chess-brand-type"><strong>PI<span>CHESS</span></strong><small>CLASSEMENTS ELO</small></span></div><div class="chess-nav"><button class="chess-nav-button" onclick="chessOpenDirectory()">Tous les profils</button><button class="chess-nav-button" onclick="openChessHub()">← Menu Échecs</button></div></header>
@@ -1016,11 +1016,7 @@ body[data-sc^="sc-chess"] .wrap{max-width:1200px;min-width:0;width:100%;}
 
 <!-- CHOIX DU BOT · sélection avant le match -->
 <div id="sc-chess-bots" class="sc chess-screen chess-bots-screen">
-<nav class="arena-rail" aria-label="Navigation du club">
-  <button class="arena-mark" onclick="openChessHub()"><i>π</i> Pi Chess</button>
-  <button onclick="openChessHub()">Salle de jeu</button><button onclick="chessOpenBotPicker()">Robots</button><button onclick="chessOpenPuzzleHub()">Puzzles</button>
-  <button onclick="chessOpenRankings('bot')">Classements</button><button onclick="chessExitToHome()">← Pi Games</button>
-</nav>
+
   <header class="chess-appbar">
     <div class="chess-brand"><span class="chess-brand-icon">♞</span><span class="chess-brand-type"><strong>PI<span>CHESS</span></strong><small>CHOIX DE L’ADVERSAIRE</small></span></div>
     <div class="chess-nav"><button type="button" class="chess-nav-button" onclick="chessOpenProfile()">Mon profil</button><button type="button" class="chess-nav-button" onclick="openChessHub()">← Modes de jeu</button></div>
@@ -1053,8 +1049,9 @@ body[data-sc^="sc-chess"] .wrap{max-width:1200px;min-width:0;width:100%;}
 <!-- BIBLIOTHÈQUE DE PUZZLES -->
 <div id="sc-chess-puzzles" class="sc chess-screen chess-puzzles-screen">
   <header class="chess-appbar"><div class="chess-brand"><span class="chess-brand-icon">◈</span><span class="chess-brand-type"><strong>PI<span>PUZZLES</span></strong><small>ENTRAÎNEMENT TACTIQUE</small></span></div><div class="chess-nav"><button type="button" class="chess-nav-button" onclick="openChessHub()">← Modes de jeu</button></div></header>
-  <div class="chess-puzzles-hero"><div><span class="chess-eyebrow"><i></i> ENTRAÎNEMENT</span><h2>Un coup peut <em>tout changer.</em></h2><p>Résolvez des positions, trouvez le bon coup et progressez à votre rythme. Vos réussites sont conservées sur cet appareil.</p></div><div class="chess-puzzles-hero-icon" aria-hidden="true">♞</div></div>
-  <div class="chess-puzzle-library-top"><div><h3>Défis tactiques</h3><p id="chess-puzzle-progress">0 puzzle résolu sur 12</p></div><div class="chess-puzzle-filters"><button type="button" class="active" data-puzzle-filter="all" onclick="chessFilterPuzzles('all')">Tous</button><button type="button" data-puzzle-filter="mate" onclick="chessFilterPuzzles('mate')">Mat en 1</button><button type="button" data-puzzle-filter="capture" onclick="chessFilterPuzzles('capture')">Gagner du matériel</button></div></div>
+  <div class="chess-puzzles-hero"><div><span class="chess-eyebrow"><i></i> ENTRAÎNEMENT</span><h2>Affûtez votre tactique.</h2><p>Résolvez des positions, trouvez le bon coup et progressez à votre rythme. Vos réussites sont conservées sur cet appareil.</p></div><div class="chess-puzzles-hero-icon" aria-hidden="true">♞</div></div>
+  <div class="knight-grid"><button type="button" class="knight-card" onclick="chessStudio.daily()"><span class="knight-icon" aria-hidden="true">◈</span><strong>Puzzle du jour</strong><small>Une position à résoudre chaque jour.</small><span class="knight-arrow" aria-hidden="true">↗</span></button><button type="button" class="knight-card" data-knight="timed"><span class="knight-icon" aria-hidden="true">◷</span><strong>Mode chronométré</strong><small>Mesurez votre temps sur une position.</small><span class="knight-arrow" aria-hidden="true">↗</span></button><button type="button" class="knight-card" data-knight="themes"><span class="knight-icon" aria-hidden="true">♞</span><strong>Thèmes tactiques</strong><small>Choisissez un mat ou une prise de matériel.</small><span class="knight-arrow" aria-hidden="true">↗</span></button></div>
+  <div class="chess-puzzle-library-top" id="knight-themes" tabindex="-1"><div><h3>Défis tactiques</h3><p id="chess-puzzle-progress">0 puzzle résolu sur 12</p></div><div class="chess-puzzle-filters"><button type="button" class="active" data-puzzle-filter="all" onclick="chessFilterPuzzles('all')">Tous</button><button type="button" data-puzzle-filter="mate" onclick="chessFilterPuzzles('mate')">Mat en 1</button><button type="button" data-puzzle-filter="capture" onclick="chessFilterPuzzles('capture')">Gagner du matériel</button></div></div>
   <div class="chess-puzzle-grid" id="chess-puzzle-grid" aria-label="Liste des puzzles"></div>
   <p class="chess-puzzle-note">Les positions sont des exercices d’entraînement en un coup. À chaque défi, vous pouvez obtenir un indice ou tenter plusieurs réponses.</p>
 </div>
@@ -1089,7 +1086,7 @@ body[data-sc^="sc-chess"] .wrap{max-width:1200px;min-width:0;width:100%;}
     <aside class="chess-side-panel" aria-label="Informations de la partie">
       <div class="chess-status-card"><div class="chess-status-head"><span class="chess-eyebrow"><i></i> EN DIRECT</span><span class="chess-status-icon">♞</span></div><b id="chess-status" role="status" aria-live="polite">Aux blancs de jouer</b><small id="chess-status-detail">Les blancs commencent.</small><div class="chess-status-meter"><span id="chess-status-meter"></span></div></div>
       <section id="chess-puzzle-panel" class="chess-puzzle-panel" hidden aria-label="Défi tactique">
-        <div class="chess-puzzle-heading"><span id="chess-puzzle-number">PUZZLE 1 / 12</span><span id="chess-puzzle-type">MAT EN 1</span></div>
+        <p id="knight-timer" hidden></p><div class="chess-puzzle-heading"><span id="chess-puzzle-number">PUZZLE 1 / 12</span><span id="chess-puzzle-type">MAT EN 1</span></div>
         <h3 id="chess-puzzle-name">Trouvez le coup décisif</h3><p id="chess-puzzle-instruction">À vous de jouer.</p>
         <div class="chess-puzzle-counts"><span>✓ <b id="chess-puzzle-solved">0</b> résolus</span><span>↻ <b id="chess-puzzle-attempts">0</b> essai(s)</span></div>
         <div id="chess-puzzle-hint" class="chess-puzzle-hint" hidden></div>
@@ -1775,8 +1772,9 @@ function showSc(id){
   const screen = document.getElementById(id);
   screen.classList.add('on');
   document.body.dataset.sc = id;
+  window.knightSync?.(id);
   document.querySelectorAll('.screen-close').forEach(b => b.remove());
-  if (!['sc-w','sc-ban','sc-home','sc-m','sc-chess','sc-chess-game','sc-chess-bots','sc-chess-puzzles'].includes(id)) {
+  if (!['sc-w','sc-ban','sc-home','sc-m','sc-chess','sc-chess-game','sc-chess-bots','sc-chess-puzzles','sc-chess-learn','sc-chess-watch'].includes(id)) {
     const close = document.createElement('button');
     close.type = 'button';
     close.className = 'screen-close';
@@ -2959,7 +2957,7 @@ function chessAfterMove(m){
     const feedback=document.getElementById('chess-puzzle-feedback');feedback.hidden=false;
     if(m.from+m.to===CHESS_PUZZLE.solution){
       chessPuzzleSolved=true;chessFinished=true;chessEndReason='Puzzle résolu !';
-      chessPuzzleSolvedSet.add(chessPuzzleIndex);chessSavePuzzleProgress();
+      window.knightStopTimer?.();chessPuzzleSolvedSet.add(chessPuzzleIndex);chessSavePuzzleProgress();
       feedback.textContent='✓ Bravo ! Vous avez trouvé le bon coup en '+chessPuzzleAttempts+' essai'+(chessPuzzleAttempts>1?'s':'')+'.';
       feedback.classList.remove('mistake');
     }else{

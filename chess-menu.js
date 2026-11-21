@@ -1,85 +1,84 @@
 (() => {
-  const sections = [
-    ['Jouer', '♞', [
-      ['Salle de jeu', openChessHub],
-      ['Contre un robot', chessOpenBotPicker],
-      ['Duel sur cet appareil', chessOpenDuelSetup]
-    ]],
-    ['Entraînement', '♟', [
-      ['Leçons sur échiquier', async () => { await openChessHub(); chessStudio.learn(); }],
-      ['Puzzle du jour', () => chessStudio.daily()],
-      ['Tous les puzzles', () => openPuzzles('all')],
-      ['Mats en un coup', () => openPuzzles('mate')],
-      ['Échiquier d’analyse', () => startChess('analysis')]
-    ]],
-    ['Communauté', '♜', [
-      ['Classement des joueurs', () => chessOpenRankings('human')],
-      ['Classement contre les robots', () => chessOpenRankings('bot')],
-      ['Annuaire du club', chessOpenDirectory]
-    ]],
-    ['Mon espace', 'π', [
-      ['Mon profil', chessOpenProfile],
-      ['Mes dernières parties', () => reveal('.arena-recent')],
-      ['Pièces et couleurs', () => reveal('.chess-menu-appearance')]
-    ]]
-  ];
+  const header = document.getElementById('knight-top');
+  const timer = document.getElementById('knight-timer');
+  let interval = 0, started = 0, routing = false;
 
-  async function openPuzzles(filter) {
-    await chessOpenPuzzleHub();
-    if (document.body.dataset.sc === 'sc-chess-puzzles') chessFilterPuzzles(filter);
+  function updateTimer(finished) {
+    const seconds = Math.floor((performance.now() - started) / 1000);
+    const duration = Math.floor(seconds / 60) + ' min ' + String(seconds % 60).padStart(2, '0') + ' s';
+    timer.textContent = (finished ? 'Résolu en ' : 'Temps écoulé · ') + duration;
   }
-
-  async function reveal(selector) {
-    await openChessHub();
-    const section = document.querySelector(selector);
-    section.tabIndex = -1;
-    section.focus({preventScroll: true});
-    section.scrollIntoView({block: 'center'});
-  }
-
-  function closeMenus() {
-    document.querySelectorAll('.club-menu details[open]').forEach(group => group.open = false);
-  }
-
-  function action(label, callback, className) {
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.textContent = label;
-    if (className) button.className = className;
-    button.addEventListener('click', () => { closeMenus(); callback(); });
-    return button;
-  }
-
-  const screens = ['sc-chess', 'sc-chess-bots', 'sc-chess-duel', 'sc-chess-puzzles', 'sc-chess-rankings', 'sc-chess-directory'];
-  screens.forEach(id => {
-    const screen = document.getElementById(id);
-    const nav = screen.querySelector('.arena-rail') || document.createElement('nav');
-    nav.className = 'arena-rail club-menu';
-    nav.setAttribute('aria-label', 'Navigation Pi Chess');
-    nav.replaceChildren(action('π  Pi Chess', openChessHub, 'arena-mark'));
-    sections.forEach(([title, icon, items]) => {
-      const group = document.createElement('details');
-      const summary = document.createElement('summary');
-      const symbol = document.createElement('span');
-      symbol.setAttribute('aria-hidden', 'true');
-      symbol.textContent = icon;
-      summary.append(symbol, title);
-      const panel = document.createElement('div');
-      panel.className = 'club-submenu';
-      items.forEach(([label, callback]) => panel.append(action(label, callback)));
-      group.append(summary, panel);
-      summary.addEventListener('click', () => {
-        nav.querySelectorAll('details[open]').forEach(other => { if (other !== group) other.open = false; });
-      });
-      nav.append(group);
+  window.knightStopTimer = () => {
+    if (interval) updateTimer(true);
+    clearInterval(interval);
+    interval = 0;
+  };
+  window.knightSync = id => {
+    let active = 'play';
+    if (id === 'sc-chess-puzzles' || (id === 'sc-chess-game' && chessMode === 'puzzle')) active = 'puzzles';
+    if (id === 'sc-chess-learn' || (id === 'sc-chess' && !document.getElementById('studio-learn').hidden)) active = 'learn';
+    if (id === 'sc-chess-watch' || id === 'sc-chess-review') active = 'watch';
+    if (id === 'sc-chess-rankings' || id === 'sc-chess-directory') active = 'rank';
+    if (id === 'sc-chess-profile') active = 'profile';
+    header.querySelectorAll('nav button,#knight-account').forEach(button => {
+      if (button.dataset.knight === active) button.setAttribute('aria-current', 'page');
+      else button.removeAttribute('aria-current');
     });
-    nav.append(action('← Centre de jeux', chessExitToHome, 'club-exit'));
-    screen.prepend(nav);
-  });
-  document.addEventListener('click', event => { if (!event.target.closest('.club-menu')) closeMenus(); });
-  document.addEventListener('keydown', event => {
-    if (event.key !== 'Escape') return;
-    const group = document.querySelector('.sc.on .club-menu details[open]');
-    if (group) { group.open = false; group.querySelector('summary').focus(); }
+    document.getElementById('knight-account').textContent = pName || 'Mon profil';
+    window.knightStopTimer();
+    timer.hidden = true;
+  };
+
+  function timed() {
+    chessStartPuzzle(Math.floor(Math.random() * CHESS_PUZZLES.length));
+    if (document.body.dataset.sc !== 'sc-chess-game') return;
+    started = performance.now();
+    timer.hidden = false;
+    updateTimer(false);
+    interval = setInterval(() => updateTimer(false), 250);
+  }
+  function replay() {
+    startChess('analysis');
+    if (document.body.dataset.sc !== 'sc-chess-game') return;
+    for (const san of ['e4', 'e5', 'Bc4', 'Nc6', 'Qh5', 'Nf6', 'Qxf7#']) chessGame.move(san);
+    chessFinished = true;
+    chessPauseClock();
+    chessRender();
+    chessOpenReview();
+    chessReviewGo(0);
+  }
+  async function navigate(button) {
+    const target = button.dataset.knight;
+    const origin = document.body.dataset.sc;
+    if (target !== 'home' && !chessAccessAllowed()) return;
+    if (origin === 'sc-chess-game' || origin === 'sc-chess-review') {
+      if (origin === 'sc-chess-game' && chessRatingEligible && !chessFinished && chessGame?.history().length &&
+          !window.confirm('Quitter cette partie classée compte comme un abandon. Quitter la partie ?')) return;
+      await openChessHub();
+    }
+    if (button.hasAttribute('data-lesson')) {
+      await openChessHub();
+      chessStudio.learn(Number(button.dataset.lesson));
+      return;
+    }
+    switch (target) {
+      case 'play': return openChessHub();
+      case 'puzzles': await chessOpenPuzzleHub(); return chessFilterPuzzles('all');
+      case 'learn': return showSc('sc-chess-learn');
+      case 'watch': return showSc('sc-chess-watch');
+      case 'rank': return chessOpenRankings('human');
+      case 'profile': return chessOpenProfile();
+      case 'home': return chessExitToHome();
+      case 'timed': return timed();
+      case 'themes': return document.getElementById('knight-themes').focus();
+      case 'replay': return replay();
+      case 'analysis': return startChess('analysis');
+    }
+  }
+  document.addEventListener('click', async event => {
+    const button = event.target.closest('[data-knight],[data-lesson]');
+    if (!button || routing) return;
+    routing = true;
+    try { await navigate(button); } finally { routing = false; }
   });
 })();

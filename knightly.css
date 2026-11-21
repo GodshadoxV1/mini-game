@@ -1,0 +1,84 @@
+#knight-top { display:none }
+body[data-sc^="sc-chess"] { display:block!important; min-height:100vh; padding:0!important; background:#f1f0ed!important; color:#262522; }
+body[data-sc^="sc-chess"] #knight-top { display:block; position:sticky; top:0; z-index:12; background:#302e2b; color:white; box-shadow:0 2px 8px #0002; }
+.knight-bar { max-width:1240px; margin:auto; padding:0 24px; height:66px; display:flex; align-items:center; gap:clamp(16px,3vw,42px); font-family:"DM Sans","Segoe UI",sans-serif; }
+.knight-bar button { border:0; border-radius:0; background:none; color:inherit; font:inherit; cursor:pointer; }
+.knight-bar .knight-brand { display:flex; align-items:center; gap:9px; font-size:24px; font-weight:800; letter-spacing:-1.2px; padding:0; }
+.knight-brand span { display:grid; place-items:center; width:34px; height:34px; border-radius:9px; color:white; background:#78a848; font-size:26px; }
+.knight-bar nav { height:100%; display:flex; gap:4px; }
+.knight-bar nav button { color:#d5d3ce; border-bottom:3px solid transparent; padding:3px 13px 0; font-size:14px; font-weight:650; }
+.knight-bar nav button:hover,.knight-bar nav button[aria-current] { color:white; border-bottom-color:#94c85c; }
+.knight-account { margin-left:auto; display:flex; gap:12px; align-items:center; }
+.knight-account button { font-size:13px; white-space:nowrap; }
+.knight-account #knight-account { padding:9px 14px; border-radius:7px; color:#203015; background:#a9d57f; max-width:150px; overflow:hidden; text-overflow:ellipsis; font-weight:750; }
+.knight-bar button:focus-visible { outline:2px solid #d5efbe; outline-offset:-3px; }
+body[data-sc^="sc-chess"] > .wrap { width:100%; max-width:1160px!important; margin:0 auto; padding:30px clamp(13px,3vw,32px) 65px; }
+body[data-sc^="sc-chess"] .wrap .chess-screen[id] { --ink:#262522; --muted-ink:#625f58; --forest:#375526; --line:#dedcd6; --paper:#f1f0ed; --card:#fff; --pistachio:#aad780; color:var(--ink); font-family:"DM Sans","Segoe UI",sans-serif; }
+.chess-screen .chess-brand,#sc-chess .chess-appbar,#sc-chess-bots .chess-appbar,.chess-screen .screen-close { display:none; }
+.chess-screen .chess-appbar { justify-content:flex-end; padding:0; border:none; margin:0 0 12px; background:transparent; }
+.knight-heading { margin:2px 0 25px; width:100%; }
+.knight-heading h1,#sc-chess .studio-heading h1,#sc-chess-bots .arena-title { font:800 clamp(30px,4vw,44px)/1.07 "DM Sans","Segoe UI",sans-serif; letter-spacing:-.05em; color:#272623; margin:0 0 8px; }
+.knight-heading p,.studio-heading p { color:#625f58; margin:0; font-size:.95rem; }
+#sc-chess .studio-layout { grid-template-columns:minmax(0,1.58fr) minmax(280px,1fr); align-items:start; gap:24px; }
+#sc-chess .studio-table,#sc-chess .studio-panel,#sc-chess .studio-daily,#sc-chess .arena-recent,#sc-chess-bots .arena-table,#sc-chess-bots .chess-bot-setup { background:white; border:1px solid #e6e3dd; color:#262522; border-radius:13px; box-shadow:0 2px 12px #25231e0b; }
+#sc-chess .studio-table,#sc-chess-bots .arena-table { padding:12px; }
+#sc-chess .studio-seat,#sc-chess-bots .arena-table>strong { color:#302e2b; min-height:43px; }
+#sc-chess .arena-large,#sc-chess-bots .arena-large { border:0; border-radius:6px; box-shadow:none; }
+#sc-chess .studio-rating b { color:#487430; }
+#sc-chess .studio-rating[hidden] { display:none; }
+#sc-chess :is(.studio-rating small,.studio-fields label,.studio-fields legend,.studio-daily h2,.arena-recent ul) { color:#625f58; }
+#sc-chess .arena-recent li,#sc-chess .studio-tabs { border-color:#e5e3dd; }
+#sc-chess .studio-tabs button { color:#605e57; }
+#sc-chess .studio-tabs button[aria-pressed=true] { color:#292824; background:white; box-shadow:inset 0 -3px #81b64c; }
+#sc-chess .studio-fields select,#sc-chess #studio-times span { border-color:#dedbd4; color:#34332f; background:white; }
+#sc-chess #studio-times input:checked+span { background:#edf6e3; border-color:#7ba64a; color:#30531e; }
+#sc-chess #studio-times input:focus-visible+span { outline-color:#476e29; }
+#sc-chess .studio-primary { background:#81b64c; color:#18270f; min-height:44px; }
+#sc-chess :is(.studio-link,.studio-daily button) { color:#476b30; }
+#sc-chess :is(#studio-note,.studio-daily strong,.arena-recent h2) { color:#302e2b; }
+#sc-chess :is(.studio-daily strong,.arena-recent h2) { font:750 1.15rem/1.3 "Segoe UI",sans-serif; }
+.knight-modes { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+.knight-modes button,.knight-card { cursor:pointer; text-align:left; color:#292824; }
+.knight-modes button { display:grid; align-content:start; gap:4px; border:1px solid #dfddd6; border-radius:9px; padding:12px 10px; background:#faf9f6; }
+.knight-modes button[aria-pressed=true] { background:#f3f8ed; border-color:#77a546; box-shadow:inset 0 0 0 1px #77a546; }
+.knight-modes span { color:#5c803d; font-size:1.55rem; }
+.knight-modes small,.knight-card small,.knight-lessons small { color:#65635c; }
+.knight-grid { display:grid; width:100%; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; margin:0 0 24px; }
+.knight-card { display:grid; grid-template-columns:1fr auto; align-content:start; gap:10px; background:white; border:1px solid #e2dfd8; border-radius:12px; padding:22px; min-height:175px; box-shadow:0 2px 10px #25231e08; }
+.knight-card strong,.knight-card small { grid-column:1/-1; }
+.knight-card strong,.knight-lessons strong { font-size:1.08rem; line-height:1.3; }
+.knight-card small,.knight-lessons small { font-size:.88rem; line-height:1.5; }
+.knight-icon { display:grid; place-items:center; width:43px; height:43px; background:#eef4e8; color:#527537; font-size:25px; border-radius:10px; }
+.knight-arrow { grid-column:2; grid-row:1; color:#658648; font-size:20px; }
+.knight-card:hover,.knight-lessons button:hover { background:#f7faf4; }
+.knight-lessons { width:100%; border:1px solid #e6e3dd; background:white; border-radius:12px; padding:0 20px; }
+.knight-lessons button { display:flex; align-items:center; gap:17px; width:100%; padding:18px 4px; background:none; border:0; color:#262522; text-align:left; cursor:pointer; }
+.knight-lessons button+button { border-top:1px solid #efede8; }
+.knight-lessons button>span { font-size:21px; font-weight:800; color:#618840; }
+.knight-lessons div { display:grid; gap:4px; }
+.knight-lessons button>b { margin-left:auto; color:#527537; }
+#knight-timer { font-weight:700; font-variant-numeric:tabular-nums; }
+#knight-themes { scroll-margin-top:120px; }
+#sc-chess-bots .chess-bot-card { background:#faf9f6; border-color:#dddcd5; }
+#sc-chess-bots .chess-bot-card.chosen { background:#f2f7eb; border-color:#81a952; box-shadow:inset 0 0 0 1px #81a952; }
+#sc-chess-bots :is(.chess-bot-meta strong,.chess-bot-preview h3,.chess-preview-elo strong) { color:#292824; }
+#sc-chess-bots .chess-bot-meta .chess-bot-elo,#sc-chess-bots :is(.chess-bot-preview p,.chess-preview-elo span,.chess-licence) { color:#625f58; }
+.chess-screen[id] :is(.chess-puzzles-hero,.chess-rank-hero,.chess-review-hero) { color:#262522!important; background:transparent!important; border:0; padding:0!important; margin:0 0 24px; }
+.chess-screen[id] :is(.chess-puzzles-hero,.chess-rank-hero,.chess-review-hero) :is(h2,p,.chess-eyebrow) { color:#302e2b; }
+.chess-screen[id] :is(.chess-puzzles-hero,.chess-rank-hero,.chess-review-hero) h2 { font:800 clamp(29px,3.8vw,42px)/1.1 "Segoe UI",sans-serif!important; letter-spacing:-.045em; }
+.chess-screen[id] :is(.chess-puzzles-hero,.chess-rank-hero,.chess-review-hero)::after,.chess-puzzles-hero-icon { display:none; }
+#sc-chess-game .chess-side-panel { --card:white; --line:#dedcd6; --ink:#262522; --muted-ink:#625f58; }
+@media(max-width:800px) {
+  .knight-bar { height:auto; flex-wrap:wrap; gap:0 12px; padding:8px 14px 0; }
+  .knight-bar nav { order:3; width:100%; overflow:auto; }
+  .knight-bar nav button { flex:1; min-height:42px; padding:2px 8px 0; }
+  .knight-account { gap:8px; }
+  #sc-chess .studio-layout { grid-template-columns:minmax(0,1.2fr) minmax(235px,1fr); gap:12px; }
+}
+@media(max-width:640px) {
+  #sc-chess .studio-layout,.knight-grid { grid-template-columns:1fr; }
+  #sc-chess .studio-table { width:100%; max-width:460px; }
+  .knight-grid { gap:8px; } .knight-card { min-height:0; padding:15px; }
+  .knight-bar nav button { font-size:12px; padding-inline:4px; }
+  body[data-sc^="sc-chess"] > .wrap { padding-top:18px; }
+}

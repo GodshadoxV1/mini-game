@@ -59,7 +59,7 @@ const chessStudio = (() => {
   }
   function setStudy(on){
     studying=on;el('play').hidden=on;el('learn').hidden=!on;
-    el('learn-tab').setAttribute('aria-pressed',String(on));el('play-tab').setAttribute('aria-pressed',String(!on));draw();
+    el('title').textContent=on?'Votre leçon sur l’échiquier.':'À vous de jouer.';el('intro').textContent=on?'Avancez coup par coup avec les flèches du panneau.':'Choisissez votre adversaire et votre cadence.';el('rating').parentElement.hidden=on;window.knightSync?.(document.body.dataset.sc);el('play-tab').setAttribute('aria-pressed',String(!on));draw();
   }
   function prepareBot(){
     chessSelectBot(el('bot').value);
@@ -76,10 +76,11 @@ const chessStudio = (() => {
   el('mode').onchange=()=>{
     const local=el('mode').value==='local',bullet=el('times').querySelector('[value="60"]');
     if(local&&bullet.checked)el('times').querySelector('[value="300"]').checked=true;
-    bullet.parentElement.hidden=local;draw();
+    bullet.parentElement.hidden=local;document.querySelectorAll('[data-mode-choice]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.modeChoice===el('mode').value)));draw();
   };
+  document.querySelectorAll('[data-mode-choice]').forEach(b=>b.onclick=()=>{el('mode').value=b.dataset.modeChoice;el('mode').onchange();});
   el('bot').onchange=draw;el('times').onchange=draw;
-  el('learn-tab').onclick=()=>setStudy(true);el('play-tab').onclick=()=>setStudy(false);
+  el('analysis-tab').onclick=()=>startChess('analysis');el('play-tab').onclick=()=>setStudy(false);
   el('lesson').onchange=()=>{ply=0;draw();};
   el('prev').onclick=()=>{if(ply>0){ply--;draw();}};
   el('next').onclick=()=>{if(ply<lessons[Number(el('lesson').value)].moves.length){ply++;draw();}};
@@ -90,5 +91,5 @@ const chessStudio = (() => {
     el('puzzle-title').textContent=puzzle.title.charAt(0).toUpperCase()+puzzle.title.slice(1);
     setStudy(false);
   }
-  return {refresh,draw,daily,learn:()=>setStudy(true)};
+  return {refresh,draw,daily,learn:(index=0)=>{el('lesson').value=String(index);ply=0;setStudy(true);}};
 })();
