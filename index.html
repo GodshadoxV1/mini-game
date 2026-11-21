@@ -306,8 +306,7 @@ body[data-sc="sc-g"] #admin-fab{display:none}
 .calc-line .st{color:var(--accent)}
 .calc-line .ok{color:var(--green)}
 .calc-line .er{color:var(--red);background:rgba(239,83,80,.15);border-radius:4px}
-.calc-line .caret{display:inline-block;width:2px;height:.95em;background:var(--accent);margin-left:2px;vertical-align:-.1em;animation:blink 1s steps(1) infinite}
-@keyframes blink{50%{opacity:0}}
+.calc-line .caret{display:inline-block;width:2px;height:.95em;background:var(--accent);margin-left:2px;vertical-align:-.1em}
 @keyframes pcur{0%,100%{box-shadow:0 0 0 rgba(66,133,244,0)}50%{box-shadow:0 0 12px rgba(66,133,244,.45)}}
 @keyframes pulse-blue{0%,100%{box-shadow:0 0 0 0 rgba(66,133,244,.35)}50%{box-shadow:0 0 0 5px rgba(66,133,244,0)}}
 
@@ -1221,7 +1220,7 @@ body[data-sc^="sc-chess"] .wrap{max-width:1200px;min-width:0;width:100%;}
       <span class="calc-label">π =</span>
       <span class="calc-banner study" id="g-banner"></span>
     </div>
-    <div class="calc-screen" id="pi-grid"><div class="calc-line" id="pi-line"></div></div>
+    <div class="calc-screen" id="pi-grid"><div class="calc-line" id="pi-line"><span id="pi-digits"></span><span class="er" id="pi-error" hidden></span><span class="caret" id="pi-caret" aria-hidden="true" hidden></span></div></div>
   </div>
 
   <div id="learn-ctrl-row" class="learn-ctrl" style="display:none">
@@ -2142,13 +2141,18 @@ function fmtPi(n){ return '3.' + PI.slice(1, n + 1); }
 function lineSize(){
   document.getElementById('pi-line').className = 'calc-line' + (tgtN <= 30 ? '' : tgtN <= 100 ? ' s-md' : tgtN <= 300 ? ' s-sm' : ' s-xs');
 }
-function setLine(html){
-  document.getElementById('pi-line').innerHTML = html;
+function setLine(n, state, error = ''){
+  const digits = document.getElementById('pi-digits');
+  digits.className = state;
+  digits.textContent = fmtPi(n);
+  const mistake = document.getElementById('pi-error');
+  mistake.textContent = error;
+  mistake.hidden = !error;
+  document.getElementById('pi-caret').hidden = state !== 'typing' || !!error;
   const sc = document.getElementById('pi-grid'); sc.scrollTop = sc.scrollHeight;
 }
-const CARET = '<span class="caret"></span>';
-function drawStudy(){ setLine(`<span class="st">${fmtPi(tgtN)}</span>`); }
-function drawTyped(n, errCh){ setLine(fmtPi(n) + (errCh ? `<span class="er">${errCh}</span>` : CARET)); }
+function drawStudy(){ setLine(tgtN, 'st'); }
+function drawTyped(n, errCh){ setLine(n, 'typing', errCh); }
 function mk(tag, cls, txt){ const e = document.createElement(tag); e.className = cls; if (txt !== undefined) e.textContent = txt; return e; }
 
 /* ── Saisie ── */
@@ -2176,7 +2180,7 @@ function inp(ch){
     curIdx++; upProg();
     if (curIdx >= tgtN) {
       alive = false; kbdActive = false; document.removeEventListener('keydown', onKey);
-      setLine(`<span class="ok">${fmtPi(curIdx)}</span>`);
+      setLine(curIdx, 'ok');
       lastResult = { score:curIdx, target:tgtN, success:true };
       finishPiRound(400);
     } else drawTyped(curIdx);
