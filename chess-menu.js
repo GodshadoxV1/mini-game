@@ -41,6 +41,7 @@
     if (id === 'sc-chess-learn' || (id === 'sc-chess' && !document.getElementById('studio-learn').hidden)) active = 'learn';
     if (id === 'sc-chess-watch' || id === 'sc-chess-review') active = 'watch';
     if (id === 'sc-chess-rankings') active = 'rank';
+    if (id === 'sc-chess-friends') active = 'friends';
     if (id === 'sc-chess-directory') active = 'directory';
     if (id === 'sc-chess-profile') active = 'profile';
     header.querySelectorAll('nav button,#knight-account').forEach(button => {
@@ -101,6 +102,7 @@
       case 'learn': return showSc('sc-chess-learn');
       case 'watch': return showSc('sc-chess-watch');
       case 'rank': return chessOpenRankings('human');
+      case 'friends': return piSocial.list();
       case 'directory': return chessOpenDirectory();
       case 'settings': {
         await openChessHub();

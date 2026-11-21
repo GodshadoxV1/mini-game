@@ -849,7 +849,7 @@ body[data-sc^="sc-chess"] .wrap{max-width:1200px;min-width:0;width:100%;}
 <button id="admin-fab" type="button" style="display:none" onclick="promptAdmin()"><i></i>Administration</button>
 
 <header id="knight-top"><div class="topbar"><button type="button" id="kl-toggle" class="mobile-menu" aria-label="Ouvrir le menu" aria-controls="kl-side" aria-expanded="false">☰</button><button type="button" class="brand" data-knight="play" aria-label="Knightly, salle de jeu"><span class="brand-mark" aria-hidden="true">♞</span>Knightly</button><nav class="top-links" aria-label="Raccourcis échecs"><button type="button" class="top-link" data-knight="play"><span class="kl-icon" aria-hidden="true">⚔</span><span>Jouer</span></button><button type="button" class="top-link" data-knight="puzzles"><span class="kl-icon" aria-hidden="true">◈</span><span>Puzzles</span></button><button type="button" class="top-link" data-knight="learn"><span class="kl-icon" aria-hidden="true">▤</span><span>Apprendre</span></button></nav><div class="top-actions"><button type="button" class="login-button" data-knight="profile" id="knight-account">Mon profil</button><button type="button" class="avatar" data-knight="profile" id="kl-avatar" aria-label="Mon profil">♙</button></div></div>
-<nav id="kl-side" class="sidebar" aria-label="Navigation Knightly"><div class="side-section-label">JOUER</div><button type="button" class="side-link" data-knight="play"><span class="kl-icon" aria-hidden="true">⚔</span><span>Jouer</span></button><button type="button" class="side-link" data-knight="puzzles"><span class="kl-icon" aria-hidden="true">◈</span><span>Puzzles</span></button><button type="button" class="side-link" data-knight="learn"><span class="kl-icon" aria-hidden="true">▤</span><span>Apprendre</span></button><button type="button" class="side-link" data-knight="watch"><span class="kl-icon" aria-hidden="true">◉</span><span>Regarder</span></button><button type="button" class="side-link" data-knight="rank"><span class="kl-icon" aria-hidden="true">♜</span><span>Classement</span></button><div class="side-divider"></div><div class="side-section-label">COMMUNAUTÉ</div><button type="button" class="side-link" data-knight="directory"><span class="kl-icon" aria-hidden="true">♙</span><span>Joueurs</span></button><button type="button" class="side-link" data-knight="profile"><span class="kl-icon" aria-hidden="true">◎</span><span>Mon profil</span></button><div class="sidebar-bottom"><button type="button" class="side-link muted" data-knight="settings"><span class="kl-icon" aria-hidden="true">⚙</span><span>Paramètres</span></button><button type="button" class="side-link muted" data-knight="help"><span class="kl-icon" aria-hidden="true">ⓘ</span><span>Aide</span></button><button type="button" class="side-link muted" data-knight="home"><span class="kl-icon" aria-hidden="true">π</span><span>Pi Games</span></button></div></nav><button type="button" class="kl-backdrop" aria-label="Fermer le menu" hidden></button></header>
+<nav id="kl-side" class="sidebar" aria-label="Navigation Knightly"><div class="side-section-label">JOUER</div><button type="button" class="side-link" data-knight="play"><span class="kl-icon" aria-hidden="true">⚔</span><span>Jouer</span></button><button type="button" class="side-link" data-knight="puzzles"><span class="kl-icon" aria-hidden="true">◈</span><span>Puzzles</span></button><button type="button" class="side-link" data-knight="learn"><span class="kl-icon" aria-hidden="true">▤</span><span>Apprendre</span></button><button type="button" class="side-link" data-knight="watch"><span class="kl-icon" aria-hidden="true">◉</span><span>Regarder</span></button><button type="button" class="side-link" data-knight="rank"><span class="kl-icon" aria-hidden="true">♜</span><span>Classement</span></button><div class="side-divider"></div><div class="side-section-label">COMMUNAUTÉ</div><button type="button" class="side-link" data-knight="friends"><span class="kl-icon" aria-hidden="true">♡</span><span>Mes amis</span></button><button type="button" class="side-link" data-knight="directory"><span class="kl-icon" aria-hidden="true">♙</span><span>Joueurs</span></button><button type="button" class="side-link" data-knight="profile"><span class="kl-icon" aria-hidden="true">◎</span><span>Mon profil</span></button><div class="sidebar-bottom"><button type="button" class="side-link muted" data-knight="settings"><span class="kl-icon" aria-hidden="true">⚙</span><span>Paramètres</span></button><button type="button" class="side-link muted" data-knight="help"><span class="kl-icon" aria-hidden="true">ⓘ</span><span>Aide</span></button><button type="button" class="side-link muted" data-knight="home"><span class="kl-icon" aria-hidden="true">π</span><span>Pi Games</span></button></div></nav><button type="button" class="kl-backdrop" aria-label="Fermer le menu" hidden></button></header>
 <div class="wrap">
 
 <!-- CONNEXION -->
@@ -923,6 +923,7 @@ body[data-sc^="sc-chess"] .wrap{max-width:1200px;min-width:0;width:100%;}
  <div class="account-identity"><span id="account-global-avatar" class="account-global-avatar">👤</span><div><b id="account-global-name">Joueur</b><small>Votre identifiant commun à Pi Master et Pi Chess</small></div></div>
  <button id="cloud-backup" type="button" class="btn bo sm" hidden>Sauvegarde cloud</button>
  <p id="cloud-sync-state" class="hint" role="status" hidden></p>
+ <div class="chess-profile-public-actions"><button type="button" onclick="piSocial.list()">Mes amis</button></div>
  <div class="chess-profile-public-actions"><button type="button" onclick="chessOpenDirectory()">👥 Voir tous les profils</button><button type="button" onclick="chessOpenRankings()">🏆 Classements Échecs</button></div><div class="account-games-grid"><button type="button" onclick="openPiProfileFromAccount()"><span>π</span><b>Profil Pi Master</b><small>Décimales, compétition, badges et classement</small><strong>Ouvrir →</strong></button><button type="button" onclick="chessOpenProfile()"><span>♞</span><b>Profil Échecs</b><small>Victoires, défaites, puzzles et historique</small><strong>Ouvrir →</strong></button></div>
 </div>
 
@@ -935,7 +936,7 @@ body[data-sc^="sc-chess"] .wrap{max-width:1200px;min-width:0;width:100%;}
   <div class="chess-profile-elo-panel"><span>🤖 ELO CONTRE LES BOTS</span><strong id="chess-profile-elo-bot">800</strong><small id="chess-profile-bot-detail">0 parties classées</small><button id="chess-profile-bot-rank-link" type="button" onclick="chessOpenRankings('bot')">Voir le classement bots ↗</button></div>
   <div class="chess-profile-elo-panel"><span>⚔ ELO CONTRE LES JOUEURS</span><strong id="chess-profile-elo-human">1000</strong><small id="chess-profile-human-detail">0 duels classés</small><small id="chess-profile-human-record" class="chess-profile-human-stats">0 V · 0 D · 0 N</small><button id="chess-profile-human-rank-link" type="button" onclick="chessOpenRankings('human')">Voir le classement joueurs ↗</button></div>
  </div>
- <div class="chess-profile-public-actions"><button id="chess-profile-pi-link" type="button">π Voir le profil Pi Master ↗</button><button type="button" onclick="chessOpenDirectory()">👥 Tous les profils</button></div>
+ <div class="chess-profile-public-actions" id="chess-social-actions"></div><div class="chess-profile-public-actions"><button id="chess-profile-pi-link" type="button">π Voir le profil Pi Master ↗</button><button type="button" onclick="chessOpenDirectory()">👥 Tous les profils</button></div>
 <div class="chess-profile-stat-grid"><div><span>PARTIES CONTRE DES BOTS</span><b id="chess-profile-games">0</b></div><div><span>VICTOIRES</span><b id="chess-profile-wins">0</b></div><div><span>DÉFAITES</span><b id="chess-profile-losses">0</b></div><div><span>NULLES</span><b id="chess-profile-draws">0</b></div></div>
  <div class="chess-profile-lower"><div class="chess-profile-panel"><span class="chess-eyebrow section">TACTIQUE</span><h3>◈ Mes puzzles</h3><p><b id="chess-profile-puzzles">0 / 12</b> exercices réussis</p><div class="chess-profile-progress"><span id="chess-profile-progress-bar"></span></div><button type="button" class="chess-nav-button" id="chess-profile-puzzle-action" onclick="chessOpenPuzzleHub()">Continuer les défis →</button></div><div class="chess-profile-panel"><span class="chess-eyebrow section">PROGRESSION</span><h3>♛ Mes performances</h3><p id="chess-profile-winrate">Taux de victoire : 0 %</p><p id="chess-profile-last">Aucune partie enregistrée pour le moment.</p><small>Les statistiques sont séparées de Pi Master et les Elo des bots sont des niveaux indicatifs.</small></div></div>
 
@@ -997,6 +998,7 @@ body[data-sc^="sc-chess"] .wrap{max-width:1200px;min-width:0;width:100%;}
  <div id="chess-rank-provisional" class="chess-provisional" hidden><div class="chess-provisional-head"><strong>📈 En progression</strong><small>Joueurs non encore éligibles au Top · profils consultables</small></div><div class="chess-rank-list" id="chess-rank-provisional-list"></div></div>
  <p class="chess-ranking-hint">Pi Chess utilise le système Glicko pour estimer le niveau et la fiabilité de la cote. Ce classement regroupe les profils présents sur cet appareil.</p>
 </div>
+<section id="sc-chess-friends" class="sc chess-screen"><div class="knight-heading"><h1>Mes amis</h1><p>Ouvrez un profil ou lancez un duel sur cet appareil.</p></div><div class="chess-profile-public-actions"><button type="button" onclick="chessOpenDirectory()">Trouver un joueur</button></div><div class="chess-rank-list" id="friends-list" aria-live="polite"></div></section>
 <div id="sc-chess-directory" class="sc chess-screen">
  <header class="chess-appbar"><div class="chess-brand"><span class="chess-brand-icon">♞</span><span class="chess-brand-type"><strong>PI<span>CHESS</span></strong><small>JOUEURS PI GAMES</small></span></div><div class="chess-nav"><button class="chess-nav-button" onclick="chessOpenRankings()">Classements</button><button class="chess-nav-button" onclick="openChessHub()">← Menu Échecs</button></div></header>
  <section class="chess-rank-hero"><span class="chess-eyebrow">👥 COMMUNAUTÉ</span><h2>Tous les profils</h2><p>Consultez les profils Échecs et Pi Master des comptes de votre base de données. Cliquez sur un joueur pour voir ses Elo, titres, badges et résultats.</p></section>
@@ -1036,7 +1038,7 @@ body[data-sc^="sc-chess"] .wrap{max-width:1200px;min-width:0;width:100%;}
         <div class="chess-elo-header"><label for="chess-elo-slider">Force de Stockfish</label><output id="chess-elo-value" for="chess-elo-slider">1600 Elo</output></div>
         <input type="range" id="chess-elo-slider" min="1320" max="3500" step="10" value="1600" oninput="chessSetCustomElo(this.value)">
         <div class="chess-elo-range"><span>1 320 · Accessible</span><span>3 500 · Puissance max*</span></div>
-        <p>De 1 320 à 3 190 : limite Elo native. Au-dessus : moteur sans limitation de force, avec temps de réflexion croissant. 3 500 est un objectif indicatif, pas un Elo certifié.</p>
+        <p>De 1 320 à 3 190 : limite Elo native. Au-dessus : moteur sans limitation de force, avec des réponses plus rapides. 3 500 est un objectif indicatif, pas un Elo certifié.</p>
       </div>
       <div class="chess-setup-field"><label for="chess-bot-time">◷ Cadence</label><select id="chess-bot-time" onchange="document.getElementById('chess-time').value=this.value"><option value="0">Sans limite</option><option value="60">Bullet · 1 min</option><option value="180">Blitz · 3 min</option><option value="300" selected>Blitz · 5 min</option><option value="600">Rapide · 10 min</option><option value="900">Rapide · 15 min</option></select></div>
       <div class="chess-setup-field"><span class="chess-setup-visual-hint">♜ Les pièces et le plateau se personnalisent dans le menu Échecs.</span></div>
@@ -1197,6 +1199,7 @@ body[data-sc^="sc-chess"] .wrap{max-width:1200px;min-width:0;width:100%;}
       </div>
     </div>
   </div>
+  <div class="profile-actions" id="pi-social-actions"></div>
   <div class="profile-actions"><button class="btn bo" type="button" onclick="chessShowChessProfileFromPi()">♞ Voir le profil Échecs</button></div>
   <div class="profile-actions">
     <button class="btn bp" id="pf-play" onclick="goMode()">Jouer</button>
@@ -1404,6 +1407,7 @@ const ALL_BADGES = [
 let db = null;
 let pName = '', pUserId = '', pData = {};
 let tgtN = 0, curIdx = 0, alive = false, kbdActive = false;
+let piRound = 0, piRoundClosed = false;
 let sTimer = null, lastTs = 0, learnGuide = false, banUser = null, banTimer = null;
 const UNIT_MS = { min:60000, h:3600000, d:86400000 };
 const CLEAR_BAN = { banned:false, banReason:null, banBy:null, banAt:null, banUntil:null };
@@ -1942,6 +1946,7 @@ async function renderProfile(uid = pUserId){
   const isOwn = uid === pUserId;
   viewingProfileId = uid;
   if (isOwn) pData = user;
+  window.piSocial?.profile('pi-social-actions',uid,user);
   const n = user.name || 'Joueur';
   document.getElementById('pf-title').textContent = isOwn ? 'Profil Pi Master' : `Profil Pi Master · ${n}`;
   document.getElementById('pf-name').textContent = n;
@@ -2034,7 +2039,9 @@ async function replayGame(){
 ═══════════════════════════════════════════ */
 async function launchGame(){
   if (!tgtN || !gameType) return;
-  if (await checkBan()) return;   // compte banni : impossible de jouer
+  const round = ++piRound;
+  if (await checkBan() || round !== piRound) return;
+  stopGameTimers(); piRoundClosed = false;
   curIdx = 0; alive = false; learnStep = 0; kbdActive = false; learnGuide = false;
   document.getElementById('g-name').textContent = pName;
   document.getElementById('g-tot').textContent = tgtN;
@@ -2073,11 +2080,11 @@ function highlightLearnStep(){
   document.getElementById('g-prog').style.width = `${(learnStep / tgtN) * 100}%`;
   // Entoure en bleu la touche du chiffre à appuyer
   clearGuide();
-  const k = document.querySelector(`.gk-num[data-n="${PI[learnStep]}"]`);
+  const k = document.querySelector(`.gk-num[data-n="${PI[learnStep + 1]}"]`);
   if (k) k.classList.add('guide');
 }
 function learnInput(ch){
-  if (ch !== PI[learnStep]) { shake(document.getElementById('pi-grid')); return; }   // mauvaise touche : rien ne se passe
+  if (ch !== PI[learnStep + 1]) { shake(document.getElementById('pi-grid')); return; }   // mauvaise touche : rien ne se passe
   learnStep++;
   if (learnStep >= tgtN) { finishLearn(); return; }
   highlightLearnStep();
@@ -2131,7 +2138,7 @@ function startPlay(){
 }
 
 /* ── Affichage façon calculatrice Google ── */
-function fmtPi(n){ return n <= 0 ? '' : (n === 1 ? '3' : '3.' + PI.slice(1, n)); }
+function fmtPi(n){ return '3.' + PI.slice(1, n + 1); }
 function lineSize(){
   document.getElementById('pi-line').className = 'calc-line' + (tgtN <= 30 ? '' : tgtN <= 100 ? ' s-md' : tgtN <= 300 ? ' s-sm' : ' s-xs');
 }
@@ -2156,8 +2163,8 @@ function handleEQ(){
   else { const b = document.getElementById('btn-eq'); b.classList.add('pr'); setTimeout(() => b.classList.remove('pr'), 110); }
 }
 function onKey(e){
-  if (!alive && !learnGuide) return;
-  if (e.key >= '0' && e.key <= '9') {
+  if ((!alive && !learnGuide) || e.repeat || e.ctrlKey || e.metaKey || e.altKey || document.body.dataset.sc !== 'sc-g') return;
+  if (/^[0-9]$/.test(e.key)) {
     document.querySelectorAll(`.gk-num[data-n="${e.key}"]`).forEach(k => { k.classList.add('pr'); setTimeout(() => k.classList.remove('pr'), 100); });
     inp(e.key);
   }
@@ -2165,20 +2172,20 @@ function onKey(e){
 function inp(ch){
   if (learnGuide) { learnInput(ch); return; }
   if (!alive) return;
-  if (ch === PI[curIdx]) {
+  if (ch === PI[curIdx + 1]) {
     curIdx++; upProg();
     if (curIdx >= tgtN) {
       alive = false; kbdActive = false; document.removeEventListener('keydown', onKey);
       setLine(`<span class="ok">${fmtPi(curIdx)}</span>`);
       lastResult = { score:curIdx, target:tgtN, success:true };
-      recordGame().then(nb => setTimeout(() => showResult(nb), 400));
+      finishPiRound(400);
     } else drawTyped(curIdx);
   } else {
     alive = false; kbdActive = false; document.removeEventListener('keydown', onKey);
     drawTyped(curIdx, ch);
     shake(document.getElementById('pi-grid'));
     lastResult = { score:curIdx, target:tgtN, success:false };
-    recordGame().then(nb => setTimeout(() => showResult(nb), 900));   // laisse voir le chiffre erroné
+    finishPiRound(900);   // laisse voir le chiffre erroné
   }
 }
 function upProg(){
@@ -2186,11 +2193,23 @@ function upProg(){
   document.getElementById('g-prog').style.width = `${(curIdx / tgtN) * 100}%`;
 }
 function setBanner(cls, txt){ const b = document.getElementById('g-banner'); b.className = `calc-banner ${cls}`; b.textContent = txt; }
+function finishPiRound(delay){
+  if (piRoundClosed) return;
+  piRoundClosed = true;
+  const round = piRound;
+  recordGame().then(badges => setTimeout(() => {
+    if (round === piRound && document.body.dataset.sc === 'sc-g') showResult(badges);
+  }, delay));
+}
 function abandonGame(){
+  ++piRound;
   stopGameTimers();
+  if (piRoundClosed) { goMode(); return; }
+  piRoundClosed = true;
   if (curIdx > 0) {
     lastResult = { score:curIdx, target:tgtN, success:false };
-    recordGame().then(() => goMode());
+    const round = piRound;
+    recordGame().then(() => { if (round === piRound && document.body.dataset.sc === "sc-g") goMode(); });
   } else goMode();
 }
 
@@ -2971,7 +2990,7 @@ function chessAfterMove(m){
   if(chessGame.game_over()){chessFinished=true;chessPauseClock();if(chessMode==='computer')chessRecordOutcome(chessGame.in_checkmate()?(chessGame.turn()==='b'?'win':'loss'):'draw');}
   chessRender();
   if(chessMode==='computer'&&!chessFinished&&chessGame.turn()==='b'){
-    chessClearPending();const generation=chessAiGeneration;chessAiTimeout=setTimeout(()=>{chessAiTimeout=null;if(generation===chessAiGeneration)chessComputerMove();},350);
+    chessClearPending();const generation=chessAiGeneration;chessAiTimeout=setTimeout(()=>{chessAiTimeout=null;if(generation===chessAiGeneration)chessComputerMove();},0);
   }
 }
 // Stockfish 19 Lite / ASM : exécuté dans un Web Worker pour garder l’interface réactive.
@@ -3051,24 +3070,31 @@ function chessStockfishMessage(line){
    }
   }
   if(!/^[a-h][1-8][a-h][1-8][qrbn]?$/.test(uci)){chessStockfishFail();return;}
-  const move=chessGame.move({from:uci.slice(0,2),to:uci.slice(2,4),promotion:uci[4]||'q'});
-  if(!move){chessStockfishFail();return;}
-  chessLastMove={from:move.from,to:move.to};chessAfterMove(move);
+  chessAiTimeout=setTimeout(()=>{
+   chessAiTimeout=null;
+   if(pending.generation!==chessAiGeneration || chessGame?.fen()!==pending.fen || chessFinished || document.body.dataset.sc!=='sc-chess-game')return;
+   const move=chessGame.move({from:uci.slice(0,2),to:uci.slice(2,4),promotion:uci[4]||'q'});
+   if(!move){chessStockfishFail();return;}
+   chessLastMove={from:move.from,to:move.to};chessAfterMove(move);
+  },Math.max(0,pending.replyAt-performance.now()));
  }
+}
+function chessReplyMs(elo){
+ return Math.round(2450 - 2000 * (Math.max(350,Math.min(3500,elo)) - 350) / 3150);
 }
 function chessAskStockfish(){
  if(!chessSfWorker||!chessSfReady||chessSfPending||!chessGame||chessGame.turn()!=='b'||chessFinished)return;
  const elo=chessBotRating(),beginner=elo<chessSfLimits.min,limited=!beginner&&elo<=chessSfLimits.max;
- chessSfPending={fen:chessGame.fen(),generation:chessAiGeneration,alternatives:beginner?new Map():null};
+ chessSfPending={fen:chessGame.fen(),generation:chessAiGeneration,alternatives:beginner?new Map():null,replyAt:performance.now()+chessReplyMs(elo)};
  try{
   chessSfWorker.postMessage('setoption name UCI_LimitStrength value '+(limited?'true':'false'));
   if(limited)chessSfWorker.postMessage('setoption name UCI_Elo value '+Math.min(chessSfLimits.max,Math.max(chessSfLimits.min,elo)));
   else chessSfWorker.postMessage('setoption name Skill Level value '+(beginner?Math.max(0,Math.floor((elo-350)/125)):20));
   chessSfWorker.postMessage('setoption name MultiPV value '+(beginner?5:1));
   chessSfWorker.postMessage('position fen '+chessSfPending.fen);
-  // For 3200–3500 the UCI strength limit is disabled; stronger levels search longer.
-  const time=elo>3190?Math.round(1700+((elo-3190)/310)**1.6*10500):elo>=2600?1800:elo>=2100?1200:elo>=1700?850:550;
-  chessSfWorker.postMessage(beginner?'go depth '+Math.max(3,Math.round(2+elo/240)):'go movetime '+time);
+  const budget=Math.min(600, Math.round(chessReplyMs(elo)*0.82));
+  const depth=beginner?' depth '+Math.max(3,Math.round(2+elo/240)):'';
+  chessSfWorker.postMessage('go movetime '+budget+depth);
  }catch(e){chessStockfishFail();}
 }
 function chessComputerMove(){
@@ -3078,7 +3104,7 @@ function chessComputerMove(){
   if(chessSfBackend==='manual-local'){chessLocalBotMove({id:'fallback',elo:1100,blunder:.08});return;}
   if(chessSfBackend==='unavailable'){chessReportEngineUnavailable();return;}
   if(chessSfReady){chessAskStockfish();return;}
-  if(!chessSfWorker){const kind=chessBotRating()>=3400?'full':'lite';chessSfAttempt=0;chessLaunchEngine(kind);}
+  if(!chessSfWorker){chessSfAttempt=0;chessLaunchEngine('lite');}
   document.getElementById('chess-status-detail').textContent='Chargement de Stockfish '+(chessSfBackend==='full'?'complet (~94 Mo)':chessSfBackend==='lite'?'Lite':'ASM de secours')+'…';
   return;
  }
@@ -3373,6 +3399,7 @@ async function chessRenderPublicProfile(uid){
  if(!u){toast('Profil introuvable','err');return;}
  await chessRefreshChampion();
  const own=uid===pUserId;
+ window.piSocial?.profile('chess-social-actions',uid,u);
  chessEl('chess-profile-name').textContent=u.name||'Joueur';chessEl('chess-profile-avatar').textContent=chessAvatar(u);
  chessEl('chess-profile-caption').textContent=own?'Mon profil Échecs · Compte Pi Games':'Profil public Échecs · Compte Pi Games';
  const bot=chessRating(u,'bot'),human=chessRating(u,'human');
@@ -3418,6 +3445,7 @@ function chessLeaveProfile(){
  const back=chessProfileOrigin;
  if(back==='sc-chess-game'&&chessGame){showSc('sc-chess-game');chessClock.last=Date.now();if(!chessFinished&&chessMode!=='puzzle')chessStartClock();chessRender();if(chessMode==='computer'&&chessGame.turn()==='b'&&!chessFinished)chessComputerMove();return;}
  if(back==='sc-chess-rankings'){chessOpenRankings(chessLeaderboardMode);return;}
+ if(back==='sc-chess-friends'){piSocial.list();return;}
  if(back==='sc-chess-directory'){chessOpenDirectory();return;}
  if(back==='sc-account'){openGlobalAccount();return;}
  if(back==='sc-chess-bots'){chessOpenBotPicker();return;}
@@ -3995,5 +4023,7 @@ closeCurrentScreen=function(){const sc=document.body.dataset.sc;if(sc==='sc-ches
 <script src="./chess-annotations.js"></script>
 <script src="./chess-studio.js"></script>
 <script src="./chess-menu.js"></script>
+<script src="./chess-social.js"></script>
+<script src="./club-pieces.js"></script>
 <script type="module" src="./cloud-backup.mjs"></script>
 </body></html>

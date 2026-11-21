@@ -128,3 +128,6 @@ body[data-sc^="sc-chess"] .wrap :is(#sc-chess,.chess-screen).chess-screen{--ink:
 #sc-chess .chess-menu-appearance :is(.chess-piece-choice,.chess-theme-choice).active{background:#465a40;color:#eff8e9;border-color:#95bb78}
 .chess-screen[id] :is(.chess-feature-icon,.chess-menu-appearance-icon,.chess-community-links button>span){background:#394638;color:var(--kl-green)}
 #sc-chess-bots .chess-setup-field select{background:#343b35;color:var(--kl-text)}
+.friend-row{display:flex;align-items:center;gap:.55rem;flex-wrap:wrap;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:12px}
+.friend-row strong{margin-right:auto}.friend-row .btn{width:auto;margin:0}
+#friends-list{width:100%;padding-block:12px;color:var(--ink)}#friends-list small{color:var(--muted-ink)}

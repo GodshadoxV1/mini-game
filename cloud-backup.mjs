@@ -57,6 +57,7 @@ function progressFields(data) {
   if (Number.isInteger(data.chessCustomElo) && data.chessCustomElo >= 1320 && data.chessCustomElo <= 3500) {
     progress.chessCustomElo = data.chessCustomElo;
   }
+  if (Array.isArray(data.chessFriends)) progress.chessFriends = piSocial.contacts(data.chessFriends);
   progress.piDay = data.piDay === true;
   progress.weekChampion = data.weekChampion === true;
   progress.badges = Array.isArray(data.badges)
