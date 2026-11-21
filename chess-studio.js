@@ -48,6 +48,8 @@ const chessStudio = (() => {
       const cell=board.children[(8-Number(sq[1]))*8+'abcdefgh'.indexOf(sq[0])];
       cell.classList.add('studio-last');
     }
+    document.getElementById('kl-opponent').textContent=studying?'Leçon guidée':local?'Partie locale':bot.name;
+    document.getElementById('kl-detail').textContent=studying?lesson.title:local?'Deux joueurs sur cet appareil':'Stockfish · '+chessBotRating(bot)+' Elo';
     const label=clock?Math.floor(clock/60)+':00':'∞';
     el('black').textContent=studying?'Noirs':local?'Adversaire local':bot.name+' · '+chessBotRating(bot)+' Elo';
     el('white').textContent=studying?'Blancs':(pName||'Vous')+' · Blancs';
@@ -59,7 +61,7 @@ const chessStudio = (() => {
   }
   function setStudy(on){
     studying=on;el('play').hidden=on;el('learn').hidden=!on;
-    el('title').textContent=on?'Votre leçon sur l’échiquier.':'À vous de jouer.';el('intro').textContent=on?'Avancez coup par coup avec les flèches du panneau.':'Choisissez votre adversaire et votre cadence.';el('rating').parentElement.hidden=on;window.knightSync?.(document.body.dataset.sc);el('play-tab').setAttribute('aria-pressed',String(!on));draw();
+    el('title').textContent=on?'Votre leçon sur l’échiquier.':'Jouer aux échecs';el('intro').textContent=on?'Avancez coup par coup avec les flèches du panneau.':'Choisissez votre adversaire et votre cadence.';el('rating').parentElement.hidden=on;window.knightSync?.(document.body.dataset.sc);el('play-tab').setAttribute('aria-pressed',String(!on));draw();
   }
   function prepareBot(){
     chessSelectBot(el('bot').value);
