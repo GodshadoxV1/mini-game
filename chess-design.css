@@ -478,3 +478,32 @@ body:is([data-sc="sc-chess"],[data-sc="sc-chess-bots"],[data-sc="sc-chess-game"]
   .arena-quick {gap:7px;}
 }
 
+
+/* Navigation du club */
+.arena-rail.club-menu {z-index:12;gap:6px;color:#e8f0e2;background:#15271f;}
+.club-menu details {position:relative;margin:0;}
+.club-menu summary {display:flex;align-items:center;gap:9px;min-height:44px;padding:8px 11px;font:650 .9rem/1.2 system-ui;cursor:pointer;border-radius:8px;list-style:none;}
+.club-menu summary::-webkit-details-marker {display:none;}
+.club-menu summary::after {content:'›';margin-left:auto;color:#b1ccae;}
+.club-menu summary span {color:#b4d690;font-size:1.2rem;}
+.club-menu details[open] summary,.club-menu summary:hover,.club-menu button:hover {background:#324a3b;}
+.club-menu summary:focus-visible {outline:2px solid #d2e99b;}
+.club-menu .club-submenu {position:absolute;top:0;left:calc(100% + 9px);display:grid;min-width:215px;padding:6px;border:1px solid #536a58;border-radius:10px;background:#1f3228;box-shadow:0 10px 24px #101b1555;}
+.club-menu .club-submenu button {white-space:normal;margin:0;min-height:42px;text-align:left;}
+.club-menu .arena-mark {color:#dbeaaf;}
+@media(min-width:1100px){
+  body:is([data-sc="sc-chess-duel"],[data-sc="sc-chess-puzzles"],[data-sc="sc-chess-rankings"],[data-sc="sc-chess-directory"]) {padding-left:190px;padding-right:25px;}
+  .club-menu .club-exit {margin-top:auto;}
+}
+@media(max-width:1099px){
+  .arena-rail.club-menu {display:flex;flex-flow:row wrap;position:relative;overflow:visible;padding:6px;border-radius:8px;}
+  .club-menu .arena-mark {display:none;}
+  .club-menu .club-submenu {top:100%;left:0;max-width:85vw;}
+  .club-menu details:nth-last-child(2) .club-submenu {left:auto;right:0;}
+}
+@media(max-width:620px){
+  .arena-rail.club-menu {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px;}
+  .club-menu .club-exit {grid-column:span 2;}
+  .club-menu details:nth-of-type(even) .club-submenu {left:auto;right:0;}
+  .club-menu details:nth-of-type(odd) .club-submenu {left:0;right:auto;}
+}
